@@ -22,11 +22,40 @@
 3. 一番左のウィンドウのプラットフォーム設定で、`Global Libraries`をクリック
 4. 右側のペインの上で、 `+`をクリックし、Javaを選択
 5. 先程ダウンロードしたJavaFXをの`lib`ディレクトリを選択して追加
-![javafx.png](javafx.png)
+![javafx.png](img/javafx.png)
 6. プロジェクト構造ダイアログでOKをクリック
 7. `Ctrl+Alt+S`(Windowsの場合),`⌘,`(Macの場合)で設定を開く
 8. `Path Variables`に`+`から`PATH_TO_FX`を追加し,先程のディレクトリを設定する 
-![setting](setting.png)
+![setting](img/setting.png)
 
 ## ビルド＆実行
-`Main.java`を開いて右上の▶をクリックして実行できる
+
+![edit](img/edit.png)
+
+右上の`Edit Configurations...`をクリック
+
+![config](img/config.png)
+
+左の`+`から`Application`を選択して上の図のように設定する
+
+- Name: `Main`
+- Main Class: `minesweeper.Main`
+- VM options: `--module-path ${PATH_TO_FX} --add-modules=javafx.controls,javafx.fxml`
+
+でApplyして,もう一回`+`から`Application`を選択して下のように設定する
+
+![mine](img/mine.png)
+
+- Name: `MineSweeper`
+- Main Class: `minesweeper.MineSweeper`
+
+でOKして閉じる.
+
+![main](img/main.png)
+
+この状態で▶をクリックして実行するとGUIが起動する
+
+![mine](img/mine1.png)
+
+この状態で▶をクリックして実行するとマインスイーパーが起動する
+
