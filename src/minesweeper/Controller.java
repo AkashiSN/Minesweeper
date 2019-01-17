@@ -2,12 +2,8 @@ package minesweeper;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
-
-import java.util.Optional;
 
 
 public class Controller {
@@ -20,14 +16,7 @@ public class Controller {
 
     @FXML
     void onButton1Action(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Title!");
-        alert.setHeaderText("Header!");
-        alert.setContentText("You entered: " + textField1.getText());
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            System.out.println("You clicked OK");
-        }
+        GameController.getInstance().show();
     }
 
 }
