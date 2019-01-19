@@ -7,20 +7,19 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    public static Stage presentStage;
-    public static Scene primaryScene;
 
     @Override
-    public void start(Stage stage) throws Exception{
-        presentStage = stage;
-        Parent root = FXMLLoader.load(getClass().getResource("minesweeper.fxml"));
-        presentStage.setTitle("Hello World");
-        Scene s = new Scene(root, 400, 400);
-        primaryScene = s;
-        presentStage.setScene(s);
-        presentStage.show();
-        presentStage = stage;
+    public void start(Stage primaryStage) throws Exception{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("minesweeper.fxml"));
+        Parent root = loader.load();
+        Controller con = loader.getController();
+        con.initPane();
+        primaryStage.setTitle("Minesweeper_JavaFX");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(true);
+        primaryStage.show();
     }
+
 
     public static void main(String[] args) {
         launch(args);
