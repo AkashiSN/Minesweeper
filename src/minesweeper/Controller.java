@@ -12,11 +12,11 @@ import java.io.InputStream;
 
 public class Controller implements TransitListener {
     private Game game;
-
     private final int IMAGE_SIZE = 50;
-
-    @FXML  private GridPane gridPane;
-    @FXML  private Label label;
+    @FXML private GridPane gridPane;
+    @FXML private Label label;
+    @FXML public Label timer;
+    @FXML public Label name;
 
     public Controller(){
         game = new Game(MineSweeper.cols,MineSweeper.rows,MineSweeper.boms);
@@ -25,7 +25,7 @@ public class Controller implements TransitListener {
         TransitController.setTransitListener(this);
     }
 
-    public void initPane(){
+    void initPane(){
         restartPane();
         gridPane.setOnMouseClicked(event ->{
             int x = (int) event.getX()/IMAGE_SIZE;

@@ -7,10 +7,10 @@ public class TransitController {
         TransitController.transitListener = transitListener;
     }
 
-    public static void transit(Coord coord){
+    static void transit(Coord coord){
         transitListener.transitAndNotify(coord);
     }
-    public static void restart(){
+    static void restart(){
         transitListener.restart();
     }
 }

@@ -12,6 +12,13 @@
       <GridPane fx:id="gridPane" gridLinesVisible="true" BorderPane.alignment="CENTER" />
    </center>
    <top>
-      <Label fx:id="label" text="Welcome" BorderPane.alignment="CENTER" />
+      <AnchorPane prefHeight="68.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="14.0" layoutY="26.0" text="ニックネーム" />
+            <Label fx:id="timer" layoutX="486.0" layoutY="26.0" text="00:00" />
+            <Label fx:id="label" layoutX="273.0" layoutY="26.0" text="welcome" />
+            <Label fx:id="name" layoutX="136.0" layoutY="26.0" text="Label" />
+         </children>
+      </AnchorPane>
    </top>
 </BorderPane>

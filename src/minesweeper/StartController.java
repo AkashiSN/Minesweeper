@@ -7,7 +7,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
-
 public class StartController {
     private boolean singleMode = true;
     private int difficultMode = 0;
@@ -57,8 +56,7 @@ public class StartController {
     }
 
     @FXML
-    void normalMode(ActionEvent event) {
-        difficultMode = 1;
+    void normalMode(ActionEvent event) { difficultMode = 1;
     }
 
     @FXML
@@ -69,7 +67,7 @@ public class StartController {
     @FXML
     void startButton(ActionEvent event) throws Exception {
         if(singleMode){
-            int c=10,r=10,b=10;
+            int c=10,r=10,b=50;
             switch (difficultMode){
                 case 0:
                     break;
@@ -81,9 +79,9 @@ public class StartController {
                 case 2:
                     c = 20;
                     r = 20;
-                    b = 50;
+                    b = 60;
             }
-            MineSweeper mine = new MineSweeper(c,r,b);
+            MineSweeper mine = new MineSweeper(c,r,b,name.getText());
             mine.start();
         }
     }
