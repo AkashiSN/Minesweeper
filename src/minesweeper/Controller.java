@@ -13,16 +13,13 @@ import java.io.InputStream;
 public class Controller implements TransitListener {
     private Game game;
 
-    private final int COLS = 9;
-    private final int ROWS = 9;
-    private final int BOMBS = 10;
     private final int IMAGE_SIZE = 50;
 
     @FXML  private GridPane gridPane;
     @FXML  private Label label;
 
     public Controller(){
-        game = new Game(COLS,ROWS,BOMBS);
+        game = new Game(MineSweeper.cols,MineSweeper.rows,MineSweeper.boms);
         game.start();
         setImages();
         TransitController.setTransitListener(this);
@@ -43,6 +40,7 @@ public class Controller implements TransitListener {
             label.setText(getMessage());
         });
     }
+
     private void restartPane(){
         for(Coord coord : Ranges.getAllCoords()){
             ImageView iv = new ImageView((Image) game.getBox(coord).image);
@@ -64,6 +62,7 @@ public class Controller implements TransitListener {
         }
 
     }
+
     private void setImages() {
         for (Box box : Box.values())
             box.image = getImage(box.name());
