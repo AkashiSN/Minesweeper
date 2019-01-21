@@ -8,9 +8,9 @@ import javafx.scene.control.Label;
 import javafx.util.Duration;
 
 public class Timer {
-    private Timeline timeline; // タイマー
-    private Duration time = Duration.ZERO; // 時間
-    private final StringProperty timeSeconds = new SimpleStringProperty(); // プロパティ
+    private static Timeline timeline; // タイマー
+    private static Duration time = Duration.ZERO; // 時間
+    private static final StringProperty timeSeconds = new SimpleStringProperty(); // プロパティ
 
     /**
      * Timer()
@@ -25,7 +25,7 @@ public class Timer {
      * start()
      * タイマーをスタートする
      */
-    public void start() {
+    static void start() {
         if (timeline == null) {
             timeline = new Timeline(
                 new KeyFrame(Duration.millis(100),
@@ -47,15 +47,23 @@ public class Timer {
      * @param duration 時間
      * @return String 文字列
      */
-    private String makeText(final Duration duration) {
+    private static String makeText(final Duration duration) {
         return String.format("%02d:%02d",
                 (long) (duration.toMinutes() % 60.0),
                 (long) (duration.toSeconds() % 60.0)
         );
     }
 
-    public void reset() {
-        time = Duration.ZERO;
+
+    /**
+     * stop()
+     * タイマーを止める
+     */
+    public static void stop() {
+        if (timeline == null) {
+            return;
+        }
+        timeline.stop();
         timeSeconds.set(makeText(time));
     }
 

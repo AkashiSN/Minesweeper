@@ -1,6 +1,5 @@
 package minesweeper;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,12 +16,16 @@ public class GameController implements TransitListener {
     private final int IMAGE_SIZE = 50;
     @FXML private GridPane gridPane;
     @FXML private Label label;
+    @FXML private Label flags;
     @FXML public Label timer;
     @FXML public Label name;
     @FXML private Button back;
 
-    @FXML
-    void backFront(ActionEvent event) {
+    /**
+     * backFront()
+     */
+    @FXML void backFront() {
+        game = null;
         Main.currentStage.setScene(Main.primaryScene);
     }
 
@@ -45,13 +48,15 @@ public class GameController implements TransitListener {
             int x = (int) event.getX()/IMAGE_SIZE;
             int y = (int) event.getY()/IMAGE_SIZE;
             Coord coord = new Coord(x, y);
-            if(event.getButton() == MouseButton.PRIMARY)
-                game.pressPrimaryButton(coord);
-            if(event.getButton() == MouseButton.SECONDARY)
-                game.pressSecondaryButton(coord);
-            if(event.getButton() == MouseButton.MIDDLE)
-                game.start();
+            if(event.getButton() == MouseButton.PRIMARY) {
+                if (event.isShiftDown()) {
+                    game.pressSecondaryButton(coord);
+                } else {
+                    game.pressPrimaryButton(coord);
+                }
+            }
             label.setText(getMessage());
+            flags.setText(String.valueOf(game.getCountOfRemainFlags()));
         });
         return size;
     }
@@ -82,6 +87,7 @@ public class GameController implements TransitListener {
                 back.setDisable(false);
                 return "YOU LOSE!";
             case WINNER:
+                back.setDisable(false);
                 return "CONGRATULATION";
             default:
                 return "Welcome";

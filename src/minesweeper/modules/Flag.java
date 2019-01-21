@@ -7,6 +7,7 @@ package minesweeper.modules;
 class Flag {
     private Matrix flagMap; // フラグの盤面
     private int countOfClosedBoxes; // 閉じられているマスの数
+    private int countOfFlagedBoxes; // フラグが立てられているマスの数
 
     /**
      * start()
@@ -57,6 +58,7 @@ class Flag {
      */
     private void setClosedToBox(Coord coord) {
         flagMap.set(coord, Box.CLOSED);
+        countOfFlagedBoxes--;
         transitToController(coord);
     }
 
@@ -67,6 +69,7 @@ class Flag {
      */
     private void setFlagedToBox(Coord coord) {
         flagMap.set(coord, Box.FLAGED);
+        countOfFlagedBoxes++;
         transitToController(coord);
     }
 
@@ -132,5 +135,14 @@ class Flag {
             if (flagMap.get(around) == Box.FLAGED)
                 count++;
         return count;
+    }
+
+    /**
+     * getCountOfFlagedBoxes()
+     * フラグが立っているマス目の数を返す
+     * @return countOfFlagedBoxes
+     */
+    int getCountOfFlagedBoxes() {
+        return countOfFlagedBoxes;
     }
 }

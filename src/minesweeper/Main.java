@@ -14,10 +14,13 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("start.fxml"));
         Parent root = loader.load();
+
         primaryStage.setTitle("難読マインスイーパー");
         primaryScene = new Scene(root);
+
         primaryStage.setScene(primaryScene);
         primaryStage.show();
+
         currentStage = primaryStage;
     }
 

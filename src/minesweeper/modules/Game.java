@@ -36,6 +36,7 @@ public class Game {
      * start()
      */
     public void start() {
+        Timer.start();
         flag.start();
         state = GameState.PLAYED;
     }
@@ -73,8 +74,10 @@ public class Game {
      * @param coord 右クリックが押された座標
      */
     public void pressSecondaryButton(Coord coord) {
-        if (gameOver()) return;
+        if (gameOver())
+            return;
         flag.toggleFlagedToBox(coord);
+        checkWinner();
     }
 
     /**
@@ -82,9 +85,26 @@ public class Game {
      * 閉じているマス目と地雷の総数が一致したらゲームクリア
      */
     private void checkWinner() {
-        if (state == GameState.PLAYED)
-            if (flag.getCountOfClosedBoxes() == bomb.getTotalBombs())
+        if (state == GameState.PLAYED){
+            if (flag.getCountOfClosedBoxes() == bomb.getTotalBombs()) { // 地雷以外のマスを開けきった時
                 state = GameState.WINNER;
+                Timer.stop();
+            }
+            if (flag.getCountOfFlagedBoxes() == bomb.getTotalBombs()){ // 地雷の数だけフラグを立てた時
+                int count = 0;
+                for (Coord coord : Ranges.getAllCoords()){
+                    if (bomb.get(coord) == Box.BOMB){
+                        if (flag.get(coord) == Box.FLAGED) {
+                            count++;
+                        }
+                    }
+                }
+                if (count == bomb.getTotalBombs()){ // フラグが全て地雷に立てられていた時
+                    state = GameState.WINNER;
+                    Timer.stop();
+                }
+            }
+        }
     }
 
     /**
@@ -133,6 +153,7 @@ public class Game {
      */
     private void openBombs(Coord bombed) {
         state = GameState.BOMBED;
+        Timer.stop();
         flag.setBombedToBox(bombed);
         for (Coord coord : Ranges.getAllCoords())
             if (bomb.get(coord) == Box.BOMB)
@@ -152,7 +173,6 @@ public class Game {
             openBox(around);
     }
 
-
     /**
      * gameOver()
      * ゲームオーバーかどうか
@@ -162,4 +182,12 @@ public class Game {
         return state != GameState.PLAYED;
     }
 
+    /**
+     * getCountOfRemainFlags()
+     * 残りのフラグの数を返す
+     * @return CountOfRemainFlags
+     */
+    public int getCountOfRemainFlags(){
+        return bomb.getTotalBombs()-flag.getCountOfFlagedBoxes();
+    }
 }
