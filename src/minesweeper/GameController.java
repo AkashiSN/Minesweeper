@@ -59,8 +59,7 @@ public class GameController implements TransitListener {
         }
         Coord size = new Coord(Ranges.getSize().x * IMAGE_SIZE,Ranges.getSize().y * IMAGE_SIZE);
         gridPane.setPrefSize(size.x,size.y);
-        size = new Coord(size.x += 120, size.y += 120);
-        return size;
+        return new Coord(size.x += 100, size.y += 120);
     }
 
     /**

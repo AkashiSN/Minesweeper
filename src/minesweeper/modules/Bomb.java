@@ -8,7 +8,7 @@ class Bomb {
     private Matrix bombMap; // 地雷の盤面
     private int totalBombs; // 地雷の数
     private boolean isWiredWithFXMLObjects; //
-    private Coord firstOpenedCoord;
+    private Coord firstOpenedCoord; // 最初に開けられたマス目の座標
 
     /**
      * Bomb()
