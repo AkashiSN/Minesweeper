@@ -60,7 +60,7 @@ public class Game {
     public void pressPrimaryButton(Coord coord) {
         if (gameOver()) return;
         if (flag.getCountOfClosedBoxes() == size) { // 初めて開ける時
-            bomb.start(coord);
+            bomb.start(coord); // 地雷を配置する
         }
         openBox(coord);
         checkWinner();

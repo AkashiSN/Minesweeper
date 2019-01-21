@@ -8,14 +8,23 @@ import javafx.scene.control.Label;
 import javafx.util.Duration;
 
 public class Timer {
-    private Timeline timeline;
-    private Duration time = Duration.ZERO;
-    private final StringProperty timeSeconds = new SimpleStringProperty();
+    private Timeline timeline; // タイマー
+    private Duration time = Duration.ZERO; // 時間
+    private final StringProperty timeSeconds = new SimpleStringProperty(); // プロパティ
 
+    /**
+     * Timer()
+     * タイマーを初期化する
+     * @param t Label
+     */
     public Timer(Label t) {
         t.textProperty().bind(timeSeconds);
     }
 
+    /**
+     * start()
+     * タイマーをスタートする
+     */
     public void start() {
         if (timeline == null) {
             timeline = new Timeline(
@@ -32,6 +41,12 @@ public class Timer {
         timeline.play();
     }
 
+    /**
+     * makeText()
+     * タイマーの時間を文字列にする
+     * @param duration 時間
+     * @return String 文字列
+     */
     private String makeText(final Duration duration) {
         return String.format("%02d:%02d",
                 (long) (duration.toMinutes() % 60.0),
