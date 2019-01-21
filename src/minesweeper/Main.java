@@ -7,14 +7,16 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    public static Stage currentStage;
+    static Stage currentStage;
+    static Scene primaryScene;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("start.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle("難読マインスイーパー");
-        primaryStage.setScene(new Scene(root));
+        primaryScene = new Scene(root);
+        primaryStage.setScene(primaryScene);
         primaryStage.show();
         currentStage = primaryStage;
     }

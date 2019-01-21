@@ -16,6 +16,7 @@
             <Label fx:id="timer" layoutX="486.0" layoutY="26.0" text="00:00" />
             <Label fx:id="label" layoutX="273.0" layoutY="26.0" text="welcome" />
             <Label fx:id="name" layoutX="136.0" layoutY="26.0" text="Label" />
+            <Button fx:id="back" disable="true" layoutX="375.0" layoutY="21.0" mnemonicParsing="false" onAction="#backFront" text="戻る" />
          </children>
       </AnchorPane>
    </top>
