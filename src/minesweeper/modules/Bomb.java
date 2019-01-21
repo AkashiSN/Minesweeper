@@ -66,6 +66,8 @@ class Bomb {
                 continue;
             if(firstOpenedCoord.equals(coord)) // 最初に開けるマスなら
                 continue;
+            if(Ranges.getCoordsAround(firstOpenedCoord).contains(coord)) // 周囲8マスは開ける
+                continue;
             bombMap.set(coord, Box.BOMB);
             incNumbersAroundBomb(coord);
             break;
