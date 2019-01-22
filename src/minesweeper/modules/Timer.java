@@ -7,6 +7,10 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 
+/**
+ * class Timer
+ * タイマー
+ */
 public class Timer {
     private static Timeline timeline; // タイマー
     private static Duration time = Duration.ZERO; // 時間

@@ -6,7 +6,6 @@ package minesweeper.modules;
 public class Game {
     private Bomb bomb; // 地雷の盤面
     private Flag flag; // フラグの盤面
-    private KanjiMap kanji; // 漢字の盤面
     private GameState state; // ゲームの状態
     private int size; // マス目の総数
 
@@ -31,11 +30,12 @@ public class Game {
         size = cols * rows;
         bomb = new Bomb(bombs);
         flag = new Flag();
-        kanji = new KanjiMap();
+        new KanjiMap();
     }
 
     /**
      * start()
+     * ゲームを開始する
      */
     public void start() {
         Timer.start();
@@ -193,6 +193,6 @@ public class Game {
      * @return CountOfRemainFlags
      */
     public int getCountOfRemainFlags(){
-        return bomb.getTotalBombs()-flag.getCountOfFlagedBoxes();
+        return bomb.getTotalBombs() - flag.getCountOfFlagedBoxes();
     }
 }

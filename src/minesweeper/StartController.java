@@ -5,7 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import minesweeper.modules.Difficulty;
 
-public class StartController {
+class StartController {
     private boolean singleMode = true;
     private Difficulty difficultMode = Difficulty.EASY;
     @FXML private TextField name;

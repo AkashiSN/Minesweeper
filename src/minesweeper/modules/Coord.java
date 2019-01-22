@@ -5,8 +5,8 @@ package minesweeper.modules;
  * 座標を保持する
  */
 public class Coord {
-    public int x;
-    public int y;
+    public int x; // x座標
+    public int y; // y座標
 
     /**
      * Coord()

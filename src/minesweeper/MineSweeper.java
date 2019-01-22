@@ -4,16 +4,27 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import minesweeper.modules.Coord;
-import minesweeper.modules.Timer;
 
 import java.io.IOException;
 
-public class MineSweeper {
-    static int cols;
-    static int rows;
-    static int boms;
-    private static String name;
+/**
+ * class MineSweeper
+ * マインスイーパーの情報共有クラス
+ */
+class MineSweeper {
+    static int cols; // 横幅
+    static int rows; // 縦の長さ
+    static int boms; // 地雷の数
+    private static String name; // ニックネーム
 
+    /**
+     * MineSweeper()
+     * 変数セット
+     * @param c 横幅
+     * @param r 縦の長さ
+     * @param b 地雷の数
+     * @param n ニックネーム
+     */
     MineSweeper(int c,int r,int b,String n){
         cols = c;
         rows = r;
@@ -21,16 +32,16 @@ public class MineSweeper {
         name = n;
     }
 
+    /**
+     * start()
+     * ゲーム画面に遷移させる
+     * @throws IOException fxmlのロードエラー
+     */
     void start() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/game.fxml"));
         Parent root = fxmlLoader.load();
         GameController gameController = fxmlLoader.getController();
-
-        new Timer(gameController.timer);
-        gameController.name.setText(name);
-
-        Coord size = gameController.initPane();
-
+        Coord size = gameController.initPane(name);
         Main.currentStage.setScene(new Scene(root,size.x,size.y));
     }
 

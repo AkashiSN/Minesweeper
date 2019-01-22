@@ -20,32 +20,38 @@ import minesweeper.modules.*;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class GameController implements TransitListener {
-    private Game game;
-    private final int IMAGE_SIZE = 50;
-    @FXML private GridPane gridPane;
-    @FXML private Label label;
-    @FXML private Label flags;
-    @FXML public Label timer;
-    @FXML public Label name;
-    @FXML private Button back;
+/**
+ * class GameController
+ * ゲーム画面のコントローラー
+ */
+class GameController implements TransitListener {
+
+    private Game game; // ゲームを保持
+    private final int IMAGE_SIZE = 50; // マスのサイズ
+    @FXML private GridPane gridPane; // 盤面
+    @FXML private Label label; // 情報ラベル
+    @FXML private Label countOfRemainFlags; // 残りのフラグの数
+    @FXML private Label timer; // タイマー
+    @FXML private Label userName; // ニックネーム
+    @FXML private Button backButton; // 戻るボタン
 
     /**
      * backToFront()
      * スタート画面に戻る
      */
-    @FXML void backToFront() {
+    @FXML private void backToFront() {
         game = null;
         Main.currentStage.setScene(Main.primaryScene);
     }
 
     /**
      * GameController()
-     * ゲームを初期化して画像を準備する
+     * ゲームを初期化
      */
-    public GameController(){
+    GameController(){
         game = new Game(MineSweeper.cols,MineSweeper.rows,MineSweeper.boms);
         game.start();
+        new Timer(timer);
         setImages();
         TransitController.setTransitListener(this);
     }
@@ -54,20 +60,21 @@ public class GameController implements TransitListener {
      * initPane()
      * 盤面を表示してイベントを登録する
      */
-    Coord initPane(){
-        Coord size = restartPane();
+    Coord initPane(String name){
+        userName.setText(name);
+        Coord size = initGrid();
         gridPane.setGridLinesVisible(true);
+        setCountOfRemainFlags();
 
-        flags.setText(String.valueOf(game.getCountOfRemainFlags()));
-        gridPane.setOnMouseClicked(event ->{
+        gridPane.setOnMouseClicked(event ->{ // マス目をクリックした時のイベントハンドラ
             int x = (int) event.getX()/IMAGE_SIZE;
             int y = (int) event.getY()/IMAGE_SIZE;
             Coord coord = new Coord(x, y);
-            if(event.getButton() == MouseButton.PRIMARY) {
-                if (KanjiMap.get(coord) == Box.KNOANSWERED) {
+            if(event.getButton() == MouseButton.PRIMARY) { // 左クリックの時
+                if (KanjiMap.get(coord) == Box.KNOANSWERED) { // 漢字がまだ回答されていない時
                     Kanji kanji = KanjiMap.getKanji(coord);
                     try {
-                        openKanjiWindow(coord, kanji.kanji,event.isShiftDown());
+                        openKanjiWindow(coord, kanji.kanji,event.isShiftDown()); // 漢字の回答ウィンドウを表示する
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -78,12 +85,20 @@ public class GameController implements TransitListener {
     }
 
     /**
-     * openKanjiWindow()
-     * 漢字回答ウィンドウを開く
-     * @param kanji 漢字
-     * @throws IOException ロードエラー
+     * setCountOfRemainFlags()
+     * 残りのフラグの数を表示する
      */
-    private void openKanjiWindow(Coord coord, String kanji,boolean isShift) throws IOException {
+    private void setCountOfRemainFlags(){
+        countOfRemainFlags.setText(String.valueOf(game.getCountOfRemainFlags()));
+    }
+
+    /**
+     * openKanjiWindow()
+     * 漢字の回答ウィンドウを開く
+     * @param kanji String 漢字
+     * @throws IOException fxmlのロードエラー
+     */
+    private void openKanjiWindow(Coord coord, String kanji, boolean isShift) throws IOException {
         Stage kanjiWindow = new Stage();
         kanjiWindow.initModality(Modality.APPLICATION_MODAL); // モーダルウインドウに設定
         kanjiWindow.initOwner(Main.currentStage); // オーナーを設定
@@ -93,34 +108,35 @@ public class GameController implements TransitListener {
         Scene scene = new Scene(root);
         kanjiWindow.setScene(scene);
         kanjiWindow.show();
-        kanjiWindow.showingProperty().addListener((observable, oldValue, newValue) -> {
+        kanjiWindow.showingProperty().addListener((observable, oldValue, newValue) -> { // 漢字の回答ウィンドウが閉じた時のイベントハンドラ
             if (oldValue && !newValue) {
-                if (KanjiMap.get(coord) == Box.KANSWERED){
-                    if (isShift) {
+                if (KanjiMap.get(coord) == Box.KANSWERED){ // 回答が正解だった時
+                    if (isShift) { // シフトが押されていたか
                         game.pressSecondaryButton(coord);
                     } else {
                         game.pressPrimaryButton(coord);
                     }
                 }
                 label.setText(getMessage());
-                flags.setText(String.valueOf(game.getCountOfRemainFlags()));
+                setCountOfRemainFlags();
             }
         });
-        final KanjiController controller = fxmlLoader.getController();
-        controller.setKanji(kanji);
-        controller.setCoord(coord);
+        final KanjiController kanjiController = fxmlLoader.getController(); // 回答ウィンドウのコントローラー
+        kanjiController.setKanji(kanji);
+        kanjiController.setCoord(coord);
     }
 
     /**
-     * restartPane()
-     * グリッドを作成して空のイメージをセットする
+     * initGrid()
+     * グリッドを作成して漢字をセットする
+     * @return size Coord ウィンドウサイズ
      */
-    private Coord restartPane(){
+    private Coord initGrid(){
         for(Coord coord : Ranges.getAllCoords()){
             Text text = new Text(KanjiMap.getKanji(coord).kanji);
 
             StackPane stackPane = new StackPane();
-            stackPane.setPrefSize(50,50);
+            stackPane.setPrefSize(IMAGE_SIZE,IMAGE_SIZE);
             stackPane.getChildren().add(text);
             StackPane.setAlignment(text, Pos.CENTER);
 
@@ -135,6 +151,7 @@ public class GameController implements TransitListener {
 
     /**
      * getMessage()
+     * 表示するメッセージを選択する
      * @return message String
      */
     private String getMessage() {
@@ -142,10 +159,10 @@ public class GameController implements TransitListener {
             case PLAYED:
                 return "Thinking";
             case BOMBED:
-                back.setDisable(false);
+                backButton.setDisable(false);
                 return "YOU LOSE!";
             case WINNER:
-                back.setDisable(false);
+                backButton.setDisable(false);
                 return "CONGRATULATION";
             default:
                 return "Welcome";
@@ -155,7 +172,7 @@ public class GameController implements TransitListener {
 
     /**
      * setImages()
-     * マス目に対して画像を配置する
+     * Boxに対して画像をセットする
      */
     private void setImages() {
         for (Box box : Box.values()) {
@@ -177,26 +194,6 @@ public class GameController implements TransitListener {
         return new Image(inputStream);
     }
 
-
-    /**
-     * restart()
-     * クラス外から呼び出す
-     */
-    @Override
-    public void restart(){
-        restartPane();
-    }
-
-    /**
-     * transitAndNotify()
-     * クラス外から呼び出す
-     * @param coord 座標
-     */
-    @Override
-    public void transitAndNotify(Coord coord) {
-        updatePane(coord);
-    }
-
     /**
      * updatePane()
      * 画面の描画を更新する
@@ -205,9 +202,19 @@ public class GameController implements TransitListener {
     private void updatePane(Coord coord) {
         if (KanjiMap.get(coord) != Box.KNOANSWERED) { // 漢字が解かれた時
             Box box = game.getBox(coord);
-            gridPane.getChildren().remove(KanjiMap.getKanjiStackPane(coord));
-            ImageView iv = new ImageView((Image) box.image);
+            gridPane.getChildren().remove(KanjiMap.getKanjiStackPane(coord)); // 漢字を消す
+            ImageView iv = new ImageView((Image) box.image); // 画像をセット
             gridPane.add(iv, coord.x, coord.y);
         }
+    }
+
+    /**
+     * transitAndNotify()
+     * moduleの中から呼び出す用
+     * @param coord 座標
+     */
+    @Override
+    public void transitAndNotify(Coord coord) {
+        updatePane(coord);
     }
 }

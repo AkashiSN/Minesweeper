@@ -24,7 +24,6 @@ public enum Box {
     KANSWERED; // 漢字問題が解かれた
 
     public Object image; // 盤面に表示する画像
-    public Kanji kanji;
 
     /**
      * getNextNumberBox()

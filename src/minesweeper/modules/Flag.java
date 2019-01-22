@@ -76,7 +76,8 @@ class Flag {
 
     /**
      * transitToController()
-     * @param coord
+     * ゲームコントローラーの描画更新関数を実行する
+     * @param coord 座標
      */
     private void transitToController(Coord coord){
         TransitController.transit(coord);
@@ -127,6 +128,7 @@ class Flag {
 
     /**
      * getCountOfFlageBoxesAround()
+     * 周辺でフラグが立っている数を返す
      * @param coord 座標
      * @return count 周辺のフラグが立ってるマスの数
      */

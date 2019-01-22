@@ -1,7 +1,7 @@
 package minesweeper.modules;
 
 public enum Difficulty {
-    EASY,
-    NORMAL,
-    DIFFICULT
+    EASY, // やさしい
+    NORMAL, // ふつう
+    DIFFICULT // むずかしい
 }

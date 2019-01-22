@@ -5,7 +5,7 @@ package minesweeper.modules;
  * ゲームの進行状況
  */
 public enum GameState {
-    PLAYED,
-    BOMBED,
-    WINNER
+    PLAYED, // ゲーム中
+    BOMBED, // 爆発した
+    WINNER // 勝利した
 }
