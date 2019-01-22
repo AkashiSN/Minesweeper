@@ -26,6 +26,7 @@ public class Timer {
      * タイマーをスタートする
      */
     static void start() {
+        time = Duration.ZERO;
         if (timeline == null) {
             timeline = new Timeline(
                 new KeyFrame(Duration.millis(100),
@@ -64,7 +65,6 @@ public class Timer {
             return;
         }
         timeline.stop();
-        time = Duration.ZERO;
         timeSeconds.set(makeText(time));
     }
 

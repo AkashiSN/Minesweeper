@@ -73,8 +73,6 @@ public class GameController implements TransitListener {
                     }
                 }
             }
-            label.setText(getMessage());
-            flags.setText(String.valueOf(game.getCountOfRemainFlags()));
         });
         return size;
     }
@@ -104,6 +102,8 @@ public class GameController implements TransitListener {
                         game.pressPrimaryButton(coord);
                     }
                 }
+                label.setText(getMessage());
+                flags.setText(String.valueOf(game.getCountOfRemainFlags()));
             }
         });
         final KanjiController controller = fxmlLoader.getController();
