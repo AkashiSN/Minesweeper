@@ -50,23 +50,9 @@ public class Game {
      * @return box
      */
     public Box getBox(Coord coord) {
-        if (kanji.get(coord) == Box.KNOANSWERED)
-            return kanji.get(coord);
-        else {
-            if (flag.get(coord) == Box.OPENED)
-                return bomb.get(coord);
-            return flag.get(coord);
-        }
-    }
-
-    /**
-     * getKanji()
-     * 渡された座標の漢字を返す
-     * @param coord 座標
-     * @return Kanji 漢字
-     */
-    public Kanji getKanji(Coord coord){
-        return kanji.getKanji(coord);
+        if (flag.get(coord) == Box.OPENED)
+            return bomb.get(coord);
+        return flag.get(coord);
     }
 
     /**
@@ -76,9 +62,6 @@ public class Game {
      */
     public void pressPrimaryButton(Coord coord) {
         if (gameOver()) {
-            return;
-        }
-        if (kanji.get(coord) == Box.KNOANSWERED){
             return;
         }
         if (flag.getCountOfClosedBoxes() == size) { // 初めて開ける時
@@ -96,9 +79,6 @@ public class Game {
      */
     public void pressSecondaryButton(Coord coord) {
         if (gameOver()) {
-            return;
-        }
-        if (kanji.get(coord) == Box.KNOANSWERED){
             return;
         }
         flag.toggleFlagedToBox(coord);

@@ -22,14 +22,14 @@ public class MineSweeper {
     }
 
     void start() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("game.fxml"));
-        Parent root = loader.load();
-        GameController con = loader.getController();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("game.fxml"));
+        Parent root = fxmlLoader.load();
+        GameController gameController = fxmlLoader.getController();
 
-        new Timer(con.timer);
-        con.name.setText(name);
+        new Timer(gameController.timer);
+        gameController.name.setText(name);
 
-        Coord size = con.initPane();
+        Coord size = gameController.initPane();
 
         Main.currentStage.setScene(new Scene(root,size.x,size.y));
     }

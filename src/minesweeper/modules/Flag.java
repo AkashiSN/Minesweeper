@@ -35,6 +35,7 @@ class Flag {
      */
     void setOpenedToBox(Coord coord) {
         flagMap.set(coord, Box.OPENED);
+        KanjiMap.setAnsweredToBox(coord);
         countOfClosedBoxes--;
         transitToController(coord);
     }

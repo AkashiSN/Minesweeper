@@ -1,5 +1,7 @@
 package minesweeper.modules;
 
+import javafx.scene.layout.StackPane;
+
 class KanjiMatrix extends Matrix {
     private Kanji[][] kanjiMatrix;
 
@@ -17,6 +19,14 @@ class KanjiMatrix extends Matrix {
     void setKanji(Coord coord,Kanji kanji){
         if(Ranges.inRange(coord))
             kanjiMatrix[coord.x][coord.y] = kanji;
+    }
+
+    void setKanjiStackPane(Coord coord, StackPane pane){
+        kanjiMatrix[coord.x][coord.y].kanjiStackPane = pane;
+    }
+
+    StackPane getKanjiStackPane(Coord coord){
+        return kanjiMatrix[coord.x][coord.y].kanjiStackPane;
     }
 
 }

@@ -1,7 +1,10 @@
 package minesweeper;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -10,8 +13,11 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import minesweeper.modules.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 public class GameController implements TransitListener {
@@ -25,15 +31,17 @@ public class GameController implements TransitListener {
     @FXML private Button back;
 
     /**
-     * backFront()
+     * backToFront()
+     * スタート画面に戻る
      */
-    @FXML void backFront() {
+    @FXML void backToFront() {
         game = null;
         Main.currentStage.setScene(Main.primaryScene);
     }
 
     /**
      * GameController()
+     * ゲームを初期化して画像を準備する
      */
     public GameController(){
         game = new Game(MineSweeper.cols,MineSweeper.rows,MineSweeper.boms);
@@ -44,19 +52,25 @@ public class GameController implements TransitListener {
 
     /**
      * initPane()
+     * 盤面を表示してイベントを登録する
      */
     Coord initPane(){
         Coord size = restartPane();
+        gridPane.setGridLinesVisible(true);
+
         flags.setText(String.valueOf(game.getCountOfRemainFlags()));
         gridPane.setOnMouseClicked(event ->{
             int x = (int) event.getX()/IMAGE_SIZE;
             int y = (int) event.getY()/IMAGE_SIZE;
             Coord coord = new Coord(x, y);
             if(event.getButton() == MouseButton.PRIMARY) {
-                if (event.isShiftDown()) {
-                    game.pressSecondaryButton(coord);
-                } else {
-                    game.pressPrimaryButton(coord);
+                if (KanjiMap.get(coord) == Box.KNOANSWERED) {
+                    Kanji kanji = KanjiMap.getKanji(coord);
+                    try {
+                        openKanjiWindow(coord, kanji.kanji,event.isShiftDown());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             label.setText(getMessage());
@@ -66,12 +80,53 @@ public class GameController implements TransitListener {
     }
 
     /**
+     * openKanjiWindow()
+     * 漢字回答ウィンドウを開く
+     * @param kanji 漢字
+     * @throws IOException ロードエラー
+     */
+    private void openKanjiWindow(Coord coord, String kanji,boolean isShift) throws IOException {
+        Stage kanjiWindow = new Stage();
+        kanjiWindow.initModality(Modality.APPLICATION_MODAL); // モーダルウインドウに設定
+        kanjiWindow.initOwner(Main.currentStage); // オーナーを設定
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("kanji.fxml"));
+        Parent root = fxmlLoader.load();
+        Scene scene = new Scene(root);
+        kanjiWindow.setScene(scene);
+        kanjiWindow.show();
+        kanjiWindow.showingProperty().addListener((observable, oldValue, newValue) -> {
+            if (oldValue && !newValue) {
+                if (KanjiMap.get(coord) == Box.KANSWERED){
+                    if (isShift) {
+                        game.pressSecondaryButton(coord);
+                    } else {
+                        game.pressPrimaryButton(coord);
+                    }
+                }
+            }
+        });
+        final KanjiController controller = fxmlLoader.getController();
+        controller.setKanji(kanji);
+        controller.setCoord(coord);
+    }
+
+    /**
      * restartPane()
      * グリッドを作成して空のイメージをセットする
      */
     private Coord restartPane(){
         for(Coord coord : Ranges.getAllCoords()){
-            updatePane(coord);
+            Text text = new Text(KanjiMap.getKanji(coord).kanji);
+
+            StackPane stackPane = new StackPane();
+            stackPane.setPrefSize(50,50);
+            stackPane.getChildren().add(text);
+            StackPane.setAlignment(text, Pos.CENTER);
+
+            KanjiMap.setKanjiStackPane(coord,stackPane);
+
+            gridPane.add(stackPane,coord.x,coord.y);
         }
         Coord size = new Coord(Ranges.getSize().x * IMAGE_SIZE,Ranges.getSize().y * IMAGE_SIZE);
         gridPane.setPrefSize(size.x,size.y);
@@ -103,9 +158,11 @@ public class GameController implements TransitListener {
      * マス目に対して画像を配置する
      */
     private void setImages() {
-        for (Box box : Box.values())
-            if (box != Box.KNOANSWERED && box != Box.KANSWERED)
+        for (Box box : Box.values()) {
+            if (box != Box.KNOANSWERED && box != Box.KANSWERED) {
                 box.image = getImage(box.name());
+            }
+        }
     }
 
     /**
@@ -120,8 +177,10 @@ public class GameController implements TransitListener {
         return new Image(inputStream);
     }
 
+
     /**
      * restart()
+     * クラス外から呼び出す
      */
     @Override
     public void restart(){
@@ -130,7 +189,8 @@ public class GameController implements TransitListener {
 
     /**
      * transitAndNotify()
-     * @param coord
+     * クラス外から呼び出す
+     * @param coord 座標
      */
     @Override
     public void transitAndNotify(Coord coord) {
@@ -139,20 +199,13 @@ public class GameController implements TransitListener {
 
     /**
      * updatePane()
-     * @param coord
+     * 画面の描画を更新する
+     * @param coord 座標
      */
     private void updatePane(Coord coord) {
-        Box box = game.getBox(coord);
-        if (box == Box.KNOANSWERED) {
-            Text text = new Text(game.getKanji(coord).kanji);
-            StackPane stackPane = new StackPane();
-            stackPane.setPrefSize(50,50);
-            //stackPane.setStyle("-fx-background-color: #cccccc;");
-            stackPane.getChildren().add(text);
-            StackPane.setAlignment(text, Pos.CENTER);
-            gridPane.setGridLinesVisible(true);
-            gridPane.add(stackPane,coord.x,coord.y);
-        } else if (box == Box.KANSWERED){
+        if (KanjiMap.get(coord) != Box.KNOANSWERED) { // 漢字が解かれた時
+            Box box = game.getBox(coord);
+            gridPane.getChildren().remove(KanjiMap.getKanjiStackPane(coord));
             ImageView iv = new ImageView((Image) box.image);
             gridPane.add(iv, coord.x, coord.y);
         }

@@ -64,6 +64,7 @@ public class Timer {
             return;
         }
         timeline.stop();
+        time = Duration.ZERO;
         timeSeconds.set(makeText(time));
     }
 
