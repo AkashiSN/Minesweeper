@@ -24,7 +24,7 @@ import java.io.InputStream;
  * class GameController
  * ゲーム画面のコントローラー
  */
-class GameController implements TransitListener {
+public class GameController implements TransitListener {
 
     private Game game; // ゲームを保持
     private final int IMAGE_SIZE = 50; // マスのサイズ
@@ -48,10 +48,9 @@ class GameController implements TransitListener {
      * GameController()
      * ゲームを初期化
      */
-    GameController(){
+    public GameController(){
         game = new Game(MineSweeper.cols,MineSweeper.rows,MineSweeper.boms);
         game.start();
-        new Timer(timer);
         setImages();
         TransitController.setTransitListener(this);
     }
@@ -61,6 +60,7 @@ class GameController implements TransitListener {
      * 盤面を表示してイベントを登録する
      */
     Coord initPane(String name){
+        new Timer(timer);
         userName.setText(name);
         Coord size = initGrid();
         gridPane.setGridLinesVisible(true);

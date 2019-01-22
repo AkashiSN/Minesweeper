@@ -10,7 +10,7 @@ import minesweeper.modules.KanjiMap;
  * class KanjiController
  * 漢字の回答ウィンドウのコントローラー
  */
-class KanjiController{
+public class KanjiController{
     private Coord coord; // 現在の座標
     @FXML private Label kanji; // 問題の漢字
     @FXML private TextField answerText; // 回答欄
@@ -28,7 +28,6 @@ class KanjiController{
         if(result){ // 正解の時
             KanjiMap.setAnsweredToBox(coord);
             kanji.getScene().getWindow().hide();
-            System.out.println("正解");
         }
     }
 

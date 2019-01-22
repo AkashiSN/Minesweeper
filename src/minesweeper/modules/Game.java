@@ -160,11 +160,13 @@ public class Game {
         state = GameState.BOMBED;
         Timer.stop();
         flag.setBombedToBox(bombed);
-        for (Coord coord : Ranges.getAllCoords())
+        for (Coord coord : Ranges.getAllCoords()) {
+            KanjiMap.setAnsweredToBox(coord);
             if (bomb.get(coord) == Box.BOMB)
                 flag.setOpenedToCloseBombBox(coord);
             else
                 flag.setNoBombToFlagedSafeBox(coord);
+        }
     }
 
     /**
