@@ -22,7 +22,7 @@ public class MineSweeper {
     }
 
     void start() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("game.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/game.fxml"));
         Parent root = fxmlLoader.load();
         GameController gameController = fxmlLoader.getController();
 

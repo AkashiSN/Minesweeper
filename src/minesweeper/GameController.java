@@ -90,7 +90,7 @@ public class GameController implements TransitListener {
         kanjiWindow.initModality(Modality.APPLICATION_MODAL); // モーダルウインドウに設定
         kanjiWindow.initOwner(Main.currentStage); // オーナーを設定
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("kanji.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/kanji.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         kanjiWindow.setScene(scene);
@@ -172,7 +172,7 @@ public class GameController implements TransitListener {
      * @return Image
      */
     private Image getImage(String name) {
-        String filename = "img/" + name.toLowerCase() + ".png";
+        String filename = "images/" + name.toLowerCase() + ".png";
         InputStream inputStream = getClass().getResourceAsStream(filename);
         return new Image(inputStream);
     }

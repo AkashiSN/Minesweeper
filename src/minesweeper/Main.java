@@ -12,7 +12,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        FXMLLoader gameController = new FXMLLoader(getClass().getResource("start.fxml"));
+        FXMLLoader gameController = new FXMLLoader(getClass().getResource("fxml/start.fxml"));
         Parent root = gameController.load();
 
         primaryStage.setTitle("難読マインスイーパー");
