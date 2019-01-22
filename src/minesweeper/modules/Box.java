@@ -19,9 +19,12 @@ public enum Box {
     CLOSED, // 閉じているマス
     FLAGED, // フラグが建てられたます
     BOMBED, // 地雷が爆発したマス
-    NOBOMB; // フラグが立てられたが、地雷がなかったマス
+    NOBOMB, // フラグが立てられたが、地雷がなかったマス
+    KNOANSWERED, // 漢字問題が解かれていない
+    KANSWERED; // 漢字問題が解かれた
 
     public Object image; // 盤面に表示する画像
+    public Kanji kanji;
 
     /**
      * getNextNumberBox()

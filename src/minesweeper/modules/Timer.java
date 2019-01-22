@@ -59,7 +59,7 @@ public class Timer {
      * stop()
      * タイマーを止める
      */
-    public static void stop() {
+    static void stop() {
         if (timeline == null) {
             return;
         }

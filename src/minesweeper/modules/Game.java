@@ -6,6 +6,7 @@ package minesweeper.modules;
 public class Game {
     private Bomb bomb; // 地雷の盤面
     private Flag flag; // フラグの盤面
+    private KanjiMap kanji; // 漢字の盤面
     private GameState state; // ゲームの状態
     private int size; // マス目の総数
 
@@ -30,6 +31,7 @@ public class Game {
         size = cols * rows;
         bomb = new Bomb(bombs);
         flag = new Flag();
+        kanji = new KanjiMap();
     }
 
     /**
@@ -48,9 +50,23 @@ public class Game {
      * @return box
      */
     public Box getBox(Coord coord) {
-        if (flag.get(coord) == Box.OPENED)
-            return bomb.get(coord);
-        return flag.get(coord);
+        if (kanji.get(coord) == Box.KNOANSWERED)
+            return kanji.get(coord);
+        else {
+            if (flag.get(coord) == Box.OPENED)
+                return bomb.get(coord);
+            return flag.get(coord);
+        }
+    }
+
+    /**
+     * getKanji()
+     * 渡された座標の漢字を返す
+     * @param coord 座標
+     * @return Kanji 漢字
+     */
+    public Kanji getKanji(Coord coord){
+        return kanji.getKanji(coord);
     }
 
     /**
@@ -59,7 +75,12 @@ public class Game {
      * @param coord 左クリックが押された座標
      */
     public void pressPrimaryButton(Coord coord) {
-        if (gameOver()) return;
+        if (gameOver()) {
+            return;
+        }
+        if (kanji.get(coord) == Box.KNOANSWERED){
+            return;
+        }
         if (flag.getCountOfClosedBoxes() == size) { // 初めて開ける時
             bomb.start(coord); // 地雷を配置する
         }
@@ -74,8 +95,12 @@ public class Game {
      * @param coord 右クリックが押された座標
      */
     public void pressSecondaryButton(Coord coord) {
-        if (gameOver())
+        if (gameOver()) {
             return;
+        }
+        if (kanji.get(coord) == Box.KNOANSWERED){
+            return;
+        }
         flag.toggleFlagedToBox(coord);
         checkWinner();
     }

@@ -1,12 +1,15 @@
 package minesweeper;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import minesweeper.modules.*;
 
 import java.io.InputStream;
@@ -44,6 +47,7 @@ public class GameController implements TransitListener {
      */
     Coord initPane(){
         Coord size = restartPane();
+        flags.setText(String.valueOf(game.getCountOfRemainFlags()));
         gridPane.setOnMouseClicked(event ->{
             int x = (int) event.getX()/IMAGE_SIZE;
             int y = (int) event.getY()/IMAGE_SIZE;
@@ -67,8 +71,7 @@ public class GameController implements TransitListener {
      */
     private Coord restartPane(){
         for(Coord coord : Ranges.getAllCoords()){
-            ImageView iv = new ImageView((Image) game.getBox(coord).image);
-            gridPane.add(iv, coord.x, coord.y);
+            updatePane(coord);
         }
         Coord size = new Coord(Ranges.getSize().x * IMAGE_SIZE,Ranges.getSize().y * IMAGE_SIZE);
         gridPane.setPrefSize(size.x,size.y);
@@ -82,7 +85,7 @@ public class GameController implements TransitListener {
     private String getMessage() {
         switch (game.getState()) {
             case PLAYED:
-                return "Think twice";
+                return "Thinking";
             case BOMBED:
                 back.setDisable(false);
                 return "YOU LOSE!";
@@ -101,7 +104,8 @@ public class GameController implements TransitListener {
      */
     private void setImages() {
         for (Box box : Box.values())
-            box.image = getImage(box.name());
+            if (box != Box.KNOANSWERED && box != Box.KANSWERED)
+                box.image = getImage(box.name());
     }
 
     /**
@@ -137,9 +141,20 @@ public class GameController implements TransitListener {
      * updatePane()
      * @param coord
      */
-    private void updatePane(Coord coord){
-        ImageView iv = new ImageView((Image) game.getBox(coord).image);
-        gridPane.add(iv, coord.x, coord.y);
+    private void updatePane(Coord coord) {
+        Box box = game.getBox(coord);
+        if (box == Box.KNOANSWERED) {
+            Text text = new Text(game.getKanji(coord).kanji);
+            StackPane stackPane = new StackPane();
+            stackPane.setPrefSize(50,50);
+            //stackPane.setStyle("-fx-background-color: #cccccc;");
+            stackPane.getChildren().add(text);
+            StackPane.setAlignment(text, Pos.CENTER);
+            gridPane.setGridLinesVisible(true);
+            gridPane.add(stackPane,coord.x,coord.y);
+        } else if (box == Box.KANSWERED){
+            ImageView iv = new ImageView((Image) box.image);
+            gridPane.add(iv, coord.x, coord.y);
+        }
     }
-
 }

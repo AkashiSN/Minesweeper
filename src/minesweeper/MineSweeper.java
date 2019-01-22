@@ -13,7 +13,6 @@ public class MineSweeper {
     static int rows;
     static int boms;
     private static String name;
-    private static Timer timer;
 
     MineSweeper(int c,int r,int b,String n){
         cols = c;
@@ -27,7 +26,7 @@ public class MineSweeper {
         Parent root = loader.load();
         GameController con = loader.getController();
 
-        timer = new Timer(con.timer);
+        new Timer(con.timer);
         con.name.setText(name);
 
         Coord size = con.initPane();

@@ -32,7 +32,7 @@ class Matrix {
 
     /**
      * set()
-     * 渡された座標が範囲内だoxをセットする
+     * 渡された座標が範囲内だったらBoxをセットする
      * @param coord 座標
      * @param box マス
      */
