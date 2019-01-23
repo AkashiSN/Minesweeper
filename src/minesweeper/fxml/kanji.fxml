@@ -1,37 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="185.0" prefWidth="544.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="minesweeper.KanjiController">
-   <top>
-      <StackPane prefHeight="70.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="260.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="minesweeper.KanjiController">
+   <children>
+         <StackPane prefHeight="80.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+            <children>
+               <Label fx:id="kanji" alignment="CENTER">
+                  <font>
+                     <Font size="33.0" />
+                  </font>
+               <StackPane.margin>
+                  <Insets top="20.0" />
+               </StackPane.margin>
+               </Label>
+            </children>
+         </StackPane>
+      <HBox prefHeight="80.0" prefWidth="500.0">
          <children>
-            <Label fx:id="kanji" alignment="CENTER">
-               <font>
-                  <Font size="33.0" />
-               </font>
-            </Label>
+            <StackPane alignment="CENTER_RIGHT" prefWidth="50.0">
+               <children>
+                  <Label fx:id="imiLabel" text="意味">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
+               </children>
+            </StackPane>
+            <StackPane alignment="CENTER_LEFT">
+               <children>
+                  <Label fx:id="imi" alignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets left="20.0" />
+                     </StackPane.margin></Label>
+               </children>
+            </StackPane>
          </children>
-      </StackPane>
-   </top>
-   <center>
-      <AnchorPane prefHeight="69.0" prefWidth="346.0" BorderPane.alignment="CENTER">
+      </HBox>
+      <AnchorPane prefHeight="100.0" prefWidth="500.0">
          <children>
-            <TextField fx:id="answerText" layoutX="58.0" layoutY="10.0" prefHeight="40.0" prefWidth="229.0" />
-            <Button fx:id="submit" layoutX="312.0" layoutY="10.0" mnemonicParsing="false" onAction="#submitKanji" prefHeight="40.0" text="回答" />
+            <TextField fx:id="answerText" layoutX="106.0" layoutY="10.0" prefHeight="40.0" prefWidth="200.0" />
+            <Button layoutX="348.0" layoutY="10.0" mnemonicParsing="false" onAction="#onSubmitButtonAction" prefHeight="40.0" text="回答" />
          </children>
       </AnchorPane>
-   </center>
-   <bottom>
-      <AnchorPane prefHeight="55.0" prefWidth="544.0" BorderPane.alignment="CENTER" />
-   </bottom>
-   <left>
-      <AnchorPane prefWidth="100.0" BorderPane.alignment="CENTER" />
-   </left>
-   <right>
-      <AnchorPane prefWidth="100.0" BorderPane.alignment="CENTER" />
-   </right>
-</BorderPane>
+   </children>
+</VBox>

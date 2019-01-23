@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -43,6 +45,7 @@ public class GameController implements TransitListener {
      * スタート画面に戻る
      */
     @FXML private void backToFront() {
+        game.reset();
         game = null;
         Main.currentStage.setScene(Main.primaryScene);
     }
@@ -51,8 +54,8 @@ public class GameController implements TransitListener {
      * GameController()
      * ゲームを初期化
      */
-    public GameController() throws FileNotFoundException {
-        game = new Game(MineSweeper.cols,MineSweeper.rows,MineSweeper.boms);
+    public GameController() throws IOException {
+        game = new Game(MineSweeper.cols, MineSweeper.rows, MineSweeper.boms);
         game.start();
         setImages();
         TransitController.setTransitListener(this);
@@ -74,10 +77,10 @@ public class GameController implements TransitListener {
             int y = (int) event.getY()/IMAGE_SIZE;
             Coord coord = new Coord(x, y);
             if(event.getButton() == MouseButton.PRIMARY) { // 左クリックの時
-                if (KanjiMap.get(coord) == Box.KNOANSWERED) { // 漢字がまだ回答されていない時
-                    Kanji kanji = KanjiMap.getKanji(coord);
+                if (game.getBox(coord) == Box.KNOANSWERED) { // 漢字がまだ回答されていない時
+                    Kanji kanji = game.getKanji(coord);
                     try {
-                        openKanjiWindow(coord, kanji.kanji,event.isShiftDown()); // 漢字の回答ウィンドウを表示する
+                        openKanjiWindow(coord, kanji.kanji, kanji.imi, event.isShiftDown()); // 漢字の回答ウィンドウを表示する
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -101,19 +104,25 @@ public class GameController implements TransitListener {
      * @param kanji String 漢字
      * @throws IOException fxmlのロードエラー
      */
-    private void openKanjiWindow(Coord coord, String kanji, boolean isShift) throws IOException {
+    private void openKanjiWindow(Coord coord, String kanji,String imi, boolean isShift) throws IOException {
         Stage kanjiWindow = new Stage();
         kanjiWindow.initModality(Modality.APPLICATION_MODAL); // モーダルウインドウに設定
         kanjiWindow.initOwner(Main.currentStage); // オーナーを設定
+        kanjiWindow.setTitle("読み仮名を答えてね");
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/kanji.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
+        scene.setOnKeyPressed((KeyEvent e) -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                scene.getWindow().hide();
+            }
+        });
         kanjiWindow.setScene(scene);
         kanjiWindow.show();
         kanjiWindow.showingProperty().addListener((observable, oldValue, newValue) -> { // 漢字の回答ウィンドウが閉じた時のイベントハンドラ
             if (oldValue && !newValue) {
-                if (KanjiMap.get(coord) == Box.KANSWERED){ // 回答が正解だった時
+                if (game.getBox(coord) != Box.KNOANSWERED){ // 回答が正解だった時
                     if (isShift) { // シフトが押されていたか
                         game.pressSecondaryButton(coord);
                     } else {
@@ -125,8 +134,7 @@ public class GameController implements TransitListener {
             }
         });
         final KanjiController kanjiController = fxmlLoader.getController(); // 回答ウィンドウのコントローラー
-        kanjiController.setKanji(kanji);
-        kanjiController.setCoord(coord);
+        kanjiController.init(kanji, imi, coord, kanjiWindow,game);
     }
 
     /**
@@ -136,7 +144,7 @@ public class GameController implements TransitListener {
      */
     private Coord initGrid(){
         for(Coord coord : Ranges.getAllCoords()){
-            Text text = new Text(KanjiMap.getKanji(coord).kanji);
+            Text text = new Text(game.getKanji(coord).kanji);
             text.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",20));
 
             StackPane stackPane = new StackPane();
@@ -144,7 +152,7 @@ public class GameController implements TransitListener {
             stackPane.getChildren().add(text);
             StackPane.setAlignment(text, Pos.CENTER);
 
-            KanjiMap.setKanjiStackPane(coord,stackPane);
+            game.setKanjiStackPane(coord,stackPane);
 
             gridPane.add(stackPane,coord.x,coord.y);
         }
@@ -204,9 +212,9 @@ public class GameController implements TransitListener {
      * @param coord 座標
      */
     private void updatePane(Coord coord) {
-        if (KanjiMap.get(coord) != Box.KNOANSWERED) { // 漢字が解かれた時
+        if (game.getBox(coord) != Box.KNOANSWERED) { // 漢字が解かれた時
             Box box = game.getBox(coord);
-            gridPane.getChildren().remove(KanjiMap.getKanjiStackPane(coord)); // 漢字を消す
+            gridPane.getChildren().remove(game.getKanjiStackPane(coord)); // 漢字を消す
             ImageView iv = new ImageView((Image) box.image); // 画像をセット
             gridPane.add(iv, coord.x, coord.y);
         }

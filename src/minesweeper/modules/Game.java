@@ -1,5 +1,9 @@
 package minesweeper.modules;
 
+import javafx.scene.layout.StackPane;
+
+import java.io.IOException;
+
 /**
  * class Game
  */
@@ -8,6 +12,7 @@ public class Game {
     private Flag flag; // フラグの盤面
     private GameState state; // ゲームの状態
     private int size; // マス目の総数
+    private KanjiMap kanjiMap; // 漢字の盤面
 
     /**
      * getState()
@@ -25,12 +30,22 @@ public class Game {
      * @param rows 縦の長さ
      * @param bombs 地雷の数
      */
-    public Game(int cols, int rows, int bombs) {
+    public Game(int cols, int rows, int bombs) throws IOException {
         Ranges.setSize(new Coord(cols, rows));
         size = cols * rows;
         bomb = new Bomb(bombs);
         flag = new Flag();
-        new KanjiMap();
+        kanjiMap = new KanjiMap();
+    }
+
+    /**
+     * reset()
+     * リセットする
+     */
+    public void reset(){
+        kanjiMap = null;
+        flag = null;
+        bomb = null;
     }
 
     /**
@@ -50,9 +65,62 @@ public class Game {
      * @return box
      */
     public Box getBox(Coord coord) {
+        if (kanjiMap.get(coord) == Box.KNOANSWERED){
+            return Box.KNOANSWERED;
+        }
         if (flag.get(coord) == Box.OPENED)
             return bomb.get(coord);
         return flag.get(coord);
+    }
+
+    /**
+     * getKanji()
+     * 渡された座標の漢字を返す
+     * @param coord 座標
+     * @return kanji
+     */
+    public Kanji getKanji(Coord coord){
+        return kanjiMap.getKanji(coord);
+    }
+
+    /**
+     * submitKanji()
+     * 漢字が合っているかどうか
+     * @param coord 座標
+     * @param yomi 読み仮名
+     * @return 正解かどうか
+     */
+    public boolean submitKanji(Coord coord, String yomi){
+        return kanjiMap.submitKanji(coord, yomi);
+    }
+
+    /**
+     * setAnsweredToBox()
+     * 渡された座標を正解とする
+     * @param coord 座標
+     */
+    public void setAnsweredToBox(Coord coord){
+        kanjiMap.setAnsweredToBox(coord);
+    }
+
+    /**
+     * setKanjiStackPane()
+     * 渡された座標に漢字のPaneをセットする
+     * @param coord 座標
+     * @param stackPane StackPane
+     */
+    public void setKanjiStackPane(Coord coord, StackPane stackPane){
+        kanjiMap.setKanjiStackPane(coord, stackPane);
+    }
+
+    /**
+     * getKanjiStackPane()
+     * 渡された座標のPaneを返す
+     * @param coord 座標
+     * @return StackPane
+     */
+    public StackPane getKanjiStackPane(Coord coord){
+        return kanjiMap.getKanjiStackPane(coord);
     }
 
     /**
@@ -133,6 +201,7 @@ public class Game {
                         openBombs(coord);
                         return;
                     default:
+                        kanjiMap.setAnsweredToBox(coord);
                         flag.setOpenedToBox(coord);
                 }
         }
@@ -161,7 +230,7 @@ public class Game {
         Timer.stop();
         flag.setBombedToBox(bombed);
         for (Coord coord : Ranges.getAllCoords()) {
-            KanjiMap.setAnsweredToBox(coord);
+            kanjiMap.setAnsweredToBox(coord);
             if (bomb.get(coord) == Box.BOMB)
                 flag.setOpenedToCloseBombBox(coord);
             else
@@ -175,6 +244,7 @@ public class Game {
      * @param coord 座標
      */
     private void openBoxesAround(Coord coord) {
+        kanjiMap.setAnsweredToBox(coord);
         flag.setOpenedToBox(coord);
         for (Coord around : Ranges.getCoordsAround(coord))
             openBox(around);

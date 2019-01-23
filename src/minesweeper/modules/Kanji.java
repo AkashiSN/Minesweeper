@@ -11,7 +11,7 @@ import java.util.List;
 public class Kanji {
     public String kanji; // 漢字
     public List<String> yomi; // 読み仮名
-    private String imi; // 意味
+    public String imi; // 意味
     StackPane kanjiStackPane; // StackPane
 
     /**

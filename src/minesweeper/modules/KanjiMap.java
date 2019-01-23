@@ -12,22 +12,14 @@ import java.util.List;
  * 漢字の盤面
  */
 public class KanjiMap {
-    private static KanjiMatrix kanjiMatrix = new KanjiMatrix();
-    private static KanjiJson kanjiJson;
-
-    static {
-        try {
-            kanjiJson = new KanjiJson();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private KanjiMatrix kanjiMatrix = new KanjiMatrix();
 
     /**
      * KanjiMap()
      * 漢字をセットする
      */
-    KanjiMap(){
+    KanjiMap() throws IOException {
+        KanjiJson kanjiJson = new KanjiJson();
         List<Kanji> kanjiList = kanjiJson.getKanjiList();
         Iterator<Kanji> it = kanjiList.iterator();
         for (Coord coord : Ranges.getAllCoords()){
@@ -45,17 +37,17 @@ public class KanjiMap {
      * @param coord 座標
      * @return Box
      */
-    public static Box get(Coord coord){
+    Box get(Coord coord){
         return kanjiMatrix.get(coord);
     }
 
     /**
      * getKanji()
      * 渡された座標の漢字を返す
-     * @param coord
+     * @param coord 座標
      * @return kanji Kanji
      */
-    public static Kanji getKanji(Coord coord){
+    public Kanji getKanji(Coord coord){
         return kanjiMatrix.getKanji(coord);
     }
 
@@ -66,7 +58,7 @@ public class KanjiMap {
      * @param yomi 読み仮名
      * @return true or false
      */
-    public static boolean submitKanji(Coord coord, String yomi){
+    boolean submitKanji(Coord coord, String yomi){
         return kanjiMatrix.getKanji(coord).yomi.contains(yomi);
     }
 
@@ -76,7 +68,7 @@ public class KanjiMap {
      * @param coord 座標
      * @param pane StackPane
      */
-    public static void setKanjiStackPane(Coord coord, StackPane pane){
+    void setKanjiStackPane(Coord coord, StackPane pane){
         kanjiMatrix.setKanjiStackPane(coord,pane);
     }
 
@@ -86,7 +78,7 @@ public class KanjiMap {
      * @param coord 座標
      * @return pane StackPane
      */
-    public static StackPane getKanjiStackPane(Coord coord){
+    StackPane getKanjiStackPane(Coord coord){
         return kanjiMatrix.getKanjiStackPane(coord);
     }
 
@@ -95,7 +87,7 @@ public class KanjiMap {
      * 渡された座標を正解済みにする
      * @param coord 座標
      */
-    public static void setAnsweredToBox(Coord coord){
+    void setAnsweredToBox(Coord coord){
         kanjiMatrix.set(coord,Box.KANSWERED);
     }
 }
