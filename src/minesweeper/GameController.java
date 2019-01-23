@@ -12,11 +12,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import minesweeper.modules.*;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -48,7 +51,7 @@ public class GameController implements TransitListener {
      * GameController()
      * ゲームを初期化
      */
-    public GameController(){
+    public GameController() throws FileNotFoundException {
         game = new Game(MineSweeper.cols,MineSweeper.rows,MineSweeper.boms);
         game.start();
         setImages();
@@ -134,6 +137,7 @@ public class GameController implements TransitListener {
     private Coord initGrid(){
         for(Coord coord : Ranges.getAllCoords()){
             Text text = new Text(KanjiMap.getKanji(coord).kanji);
+            text.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",20));
 
             StackPane stackPane = new StackPane();
             stackPane.setPrefSize(IMAGE_SIZE,IMAGE_SIZE);
@@ -174,7 +178,7 @@ public class GameController implements TransitListener {
      * setImages()
      * Boxに対して画像をセットする
      */
-    private void setImages() {
+    private void setImages() throws FileNotFoundException {
         for (Box box : Box.values()) {
             if (box != Box.KNOANSWERED && box != Box.KANSWERED) {
                 box.image = getImage(box.name());
@@ -188,9 +192,9 @@ public class GameController implements TransitListener {
      * @param name 画像名
      * @return Image
      */
-    private Image getImage(String name) {
-        String filename = "images/" + name.toLowerCase() + ".png";
-        InputStream inputStream = getClass().getResourceAsStream(filename);
+    private Image getImage(String name) throws FileNotFoundException {
+        String filename = "resources/images/" + name.toLowerCase() + ".png";
+        InputStream inputStream = new FileInputStream(filename);
         return new Image(inputStream);
     }
 

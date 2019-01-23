@@ -2,13 +2,16 @@ package minesweeper.modules;
 
 import javafx.scene.layout.StackPane;
 
+import java.util.List;
+
 /**
  * class Kanji
  * 漢字の構造体
  */
 public class Kanji {
     public String kanji; // 漢字
-    String yomi; // 読み仮名
+    public List<String> yomi; // 読み仮名
+    private String imi; // 意味
     StackPane kanjiStackPane; // StackPane
 
     /**
@@ -17,8 +20,9 @@ public class Kanji {
      * @param k 漢字
      * @param y 読み仮名
      */
-    Kanji(String k, String y) {
+    Kanji(String k,List<String> y,String i) {
         kanji = k;
         yomi = y;
+        imi = i;
     }
 }

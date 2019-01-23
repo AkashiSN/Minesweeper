@@ -3,6 +3,7 @@ package minesweeper;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Font;
 import minesweeper.modules.Coord;
 import minesweeper.modules.KanjiMap;
 
@@ -37,6 +38,7 @@ public class KanjiController{
      * @param k 漢字
      */
     void setKanji(String k){
+        kanji.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",50));
         kanji.setText(k);
     }
 

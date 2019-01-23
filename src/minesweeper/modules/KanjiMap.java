@@ -2,20 +2,40 @@ package minesweeper.modules;
 
 import javafx.scene.layout.StackPane;
 
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+
+
 /**
  * class KanjiMap
  * 漢字の盤面
  */
 public class KanjiMap {
     private static KanjiMatrix kanjiMatrix = new KanjiMatrix();
+    private static KanjiJson kanjiJson;
+
+    static {
+        try {
+            kanjiJson = new KanjiJson();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * KanjiMap()
      * 漢字をセットする
      */
     KanjiMap(){
+        List<Kanji> kanjiList = kanjiJson.getKanjiList();
+        Iterator<Kanji> it = kanjiList.iterator();
         for (Coord coord : Ranges.getAllCoords()){
-            kanjiMatrix.setKanji(coord,new Kanji("漢字","かんじ"));
+            Kanji kanji = it.next();
+            if (kanji.kanji.isBlank()){
+                System.out.println(kanji);
+            }
+            kanjiMatrix.setKanji(coord,kanji);
         }
     }
 
@@ -47,7 +67,7 @@ public class KanjiMap {
      * @return true or false
      */
     public static boolean submitKanji(Coord coord, String yomi){
-        return kanjiMatrix.getKanji(coord).yomi.equals(yomi);
+        return kanjiMatrix.getKanji(coord).yomi.contains(yomi);
     }
 
     /**
