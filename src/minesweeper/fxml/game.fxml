@@ -32,7 +32,12 @@
       <AnchorPane prefHeight="50.0" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <GridPane fx:id="gridPane" BorderPane.alignment="CENTER">
-      </GridPane>
+      <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+         <content>
+            <GridPane fx:id="gridPane">
+              
+            </GridPane>
+         </content>
+      </ScrollPane>
    </center>
 </BorderPane>
