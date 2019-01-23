@@ -32,6 +32,7 @@ public class KanjiController{
     @FXML private Label kanji; // 問題の漢字
     @FXML private Label imi;
     @FXML private Label imiLabel;
+    @FXML private Label infoLabel;
     @FXML private TextField answerText; // 回答欄
 
     /**
@@ -83,7 +84,7 @@ public class KanjiController{
      * @param c 読み仮名
      * @param s ウィンドウ
      */
-    void init(String k,String i, Coord c, Stage s, Game g){
+    void init(String k,String i, Coord c, Stage s, Game g, boolean shift){
         game = g;
         answerText.setOnKeyPressed(ke -> {
             if (ke.getCode().equals(KeyCode.ENTER))
@@ -98,6 +99,13 @@ public class KanjiController{
         imiLabel.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",20));
         imi.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",15));
         kanji.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",50));
+        String info;
+        if (shift){
+            info = "フラグを立てる";
+        }else{
+            info = "マスを開ける";
+        }
+        infoLabel.setText(info);
         imi.setText(i);
         kanji.setText(k);
         coord = c;

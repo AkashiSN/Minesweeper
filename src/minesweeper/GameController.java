@@ -134,7 +134,7 @@ public class GameController implements TransitListener {
             }
         });
         final KanjiController kanjiController = fxmlLoader.getController(); // 回答ウィンドウのコントローラー
-        kanjiController.init(kanji, imi, coord, kanjiWindow,game);
+        kanjiController.init(kanji, imi, coord, kanjiWindow,game, isShift);
     }
 
     /**
