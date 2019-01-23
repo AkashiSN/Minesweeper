@@ -38,7 +38,7 @@
                   </Label>
                </children>
             </StackPane>
-            <StackPane alignment="CENTER_LEFT">
+            <StackPane alignment="CENTER_LEFT" prefWidth="450.0">
                <children>
                   <Label fx:id="imi" wrapText="true">
                      <font>

@@ -38,19 +38,19 @@ public class StartController {
             int c,r,b;
             switch (difficultMode){
                 case NORMAL:
-                    c = 15;
-                    r = 15;
-                    b = c * r / 5;
+                    c = 9;
+                    r = 9;
+                    b = c * r / 7;
                     break;
                 case DIFFICULT:
-                    c = 20;
-                    r = 10;
-                    b = c * r / 5;
+                    c = 15;
+                    r = 20;
+                    b = c * r / 7;
                     break;
                 default:
-                    c = 6;
-                    r = 6;
-                    b = c * r / 5;
+                    c = 7;
+                    r = 7;
+                    b = c * r / 7;
             }
             MineSweeper mine = new MineSweeper(c,r,b,name.getText());
             mine.start();
