@@ -282,11 +282,20 @@ public class Game {
     }
 
     /**
-     * getCountOfRemainFlags()
-     * 残りのフラグの数を返す
-     * @return CountOfRemainFlags
+     * getTotalBombs()
+     * 地雷の数を返す
+     * @return TotalBombs
      */
-    public int getCountOfRemainFlags(){
-        return bomb.getTotalBombs() - flag.getCountOfFlagedBoxes();
+    public int getTotalBombs(){
+        return bomb.getTotalBombs();
+    }
+
+    /**
+     * getCountOfFlagedBoxes()
+     * フラグの数を返す
+     * @return CountOfFlagedBoxes
+     */
+    public int getCountOfFlagedBoxes(){
+        return flag.getCountOfFlagedBoxes();
     }
 }

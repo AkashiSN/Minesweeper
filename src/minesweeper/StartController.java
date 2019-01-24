@@ -7,33 +7,38 @@ import minesweeper.modules.Difficulty;
 
 public class StartController {
     private boolean singleMode = true;
+    private boolean autoMode = false;
     private Difficulty difficultMode = Difficulty.EASY;
     @FXML private TextField name;
     @FXML private Button start;
 
-    @FXML void singleMode() {
+    @FXML private void singleMode() {
         singleMode = true;
         start.setText("ゲーム開始");
     }
 
-    @FXML void multiMode() {
+    @FXML private void multiMode() {
         singleMode = false;
         start.setText("マッチング開始");
     }
 
-    @FXML void easyMode() {
+    @FXML void autoMode(){
+        autoMode = true;
+    }
+
+    @FXML private void easyMode() {
         difficultMode = Difficulty.EASY;
     }
 
-    @FXML void normalMode() {
+    @FXML private void normalMode() {
         difficultMode = Difficulty.NORMAL;
     }
 
-    @FXML void difficultMode() {
+    @FXML private void difficultMode() {
         difficultMode = Difficulty.DIFFICULT;
     }
 
-    @FXML void startButton() throws Exception {
+    @FXML private void startButton() throws Exception {
         if(singleMode){
             int c,r,b;
             switch (difficultMode){
@@ -53,7 +58,7 @@ public class StartController {
                     b = c * r / 7;
             }
             MineSweeper mine = new MineSweeper(c,r,b,name.getText());
-            mine.start();
+            mine.start(autoMode);
         }
     }
 

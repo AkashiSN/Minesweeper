@@ -1,11 +1,11 @@
 package minesweeper;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,6 +19,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import minesweeper.modules.*;
+import minesweeper.solver.Solver;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,22 +33,21 @@ import java.io.InputStream;
 public class GameController implements TransitListener {
 
     private Game game; // ゲームを保持
+    private Solver solver; // ソルバー
     private final int IMAGE_SIZE = 50; // マスのサイズ
     @FXML private GridPane gridPane; // 盤面
-    @FXML private Label label; // 情報ラベル
-    @FXML private Label countOfRemainFlags; // 残りのフラグの数
-    @FXML private Label timer; // タイマー
-    @FXML private Label userName; // ニックネーム
-    @FXML private Button backButton; // 戻るボタン
+    private Label flagsBomb;
+//    @FXML private Label label; // 情報ラベル
 
-    /**
-     * backToFront()
-     * スタート画面に戻る
-     */
-    @FXML private void backToFront() {
-        game.reset();
-        game = null;
-        Main.currentStage.setScene(Main.primaryScene);
+
+
+    Game getGame(){
+        return game;
+    }
+
+    void setFlagsBom(Label l){
+        flagsBomb = l;
+        setCountOfRemainFlags();
     }
 
     /**
@@ -65,39 +65,55 @@ public class GameController implements TransitListener {
      * initPane()
      * 盤面を表示してイベントを登録する
      */
-    Coord initPane(String name){
-        new Timer(timer);
-        userName.setText(name);
+    Coord initPane(boolean autoMode){
+        if (autoMode){
+            solver = new Solver(game);
+        }
         Coord size = initGrid();
         gridPane.setGridLinesVisible(true);
-        setCountOfRemainFlags();
 
-        gridPane.setOnMouseClicked(event ->{ // マス目をクリックした時のイベントハンドラ
-            int x = (int) event.getX()/IMAGE_SIZE;
-            int y = (int) event.getY()/IMAGE_SIZE;
+        gridPane.setOnMouseClicked(event -> { // マス目をクリックした時のイベントハンドラ
+            int x = (int) event.getX() / IMAGE_SIZE;
+            int y = (int) event.getY() / IMAGE_SIZE;
             Coord coord = new Coord(x, y);
-            if(event.getButton() == MouseButton.PRIMARY) { // 左クリックの時
-                if (game.getBox(coord) == Box.KNOANSWERED) { // 漢字がまだ回答されていない時
-                    Kanji kanji = game.getKanji(coord);
-                    try {
-                        openKanjiWindow(coord, kanji.kanji, kanji.imi, event.isShiftDown()); // 漢字の回答ウィンドウを表示する
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else { // 漢字が回答済み
-                    if (event.isShiftDown()) { // シフトが押されていたか
-                        game.pressSecondaryButton(coord);
-                    } else {
-                        if (game.getBox(coord) == Box.CLOSED){
-                           game.pressPrimaryButton(coord);
-                        }
-                    }
-                    label.setText(getMessage());
-                    setCountOfRemainFlags();
-                }
-            }
+            mouseClickedEvent(event.getButton(),event.isShiftDown(),coord);
         });
         return size;
+    }
+
+    void startAuto() {
+        new Thread(() -> {
+            //考えているふりをする。
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Platform.runLater(() -> solver.solve());
+        }).start();
+    }
+
+    private void mouseClickedEvent(MouseButton mb, boolean isShift, Coord coord) {
+        if (mb == MouseButton.PRIMARY) { // 左クリックの時
+            if (game.getBox(coord) == Box.KNOANSWERED) { // 漢字がまだ回答されていない時
+                Kanji kanji = game.getKanji(coord);
+                try {
+                    openKanjiWindow(coord, kanji.kanji, kanji.imi, isShift); // 漢字の回答ウィンドウを表示する
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else { // 漢字が回答済み
+                if (isShift) { // シフトが押されていたか
+                    game.pressSecondaryButton(coord);
+                } else {
+                    if (game.getBox(coord) == Box.CLOSED) {
+                        game.pressPrimaryButton(coord);
+                    }
+                }
+                //label.setText(getMessage());
+                setCountOfRemainFlags();
+            }
+        }
     }
 
     /**
@@ -105,7 +121,9 @@ public class GameController implements TransitListener {
      * 残りのフラグの数を表示する
      */
     private void setCountOfRemainFlags(){
-        countOfRemainFlags.setText(String.valueOf(game.getCountOfRemainFlags()));
+        String b = String.valueOf(game.getTotalBombs());
+        String f = String.valueOf(game.getCountOfFlagedBoxes());
+        flagsBomb.setText(f + " / " + b);
     }
 
     /**
@@ -139,7 +157,7 @@ public class GameController implements TransitListener {
                         game.pressPrimaryButton(coord);
                     }
                 }
-                label.setText(getMessage());
+                //label.setText(getMessage());
                 setCountOfRemainFlags();
             }
         });
@@ -168,7 +186,7 @@ public class GameController implements TransitListener {
         }
         Coord size = new Coord(Ranges.getSize().x * IMAGE_SIZE,Ranges.getSize().y * IMAGE_SIZE);
         gridPane.setPrefSize(size.x,size.y);
-        return new Coord(size.x += 100, size.y += 120);
+        return new Coord(size.x += 20, size.y += 20);
     }
 
     /**
@@ -181,10 +199,8 @@ public class GameController implements TransitListener {
             case PLAYED:
                 return "Thinking";
             case BOMBED:
-                backButton.setDisable(false);
                 return "YOU LOSE!";
             case WINNER:
-                backButton.setDisable(false);
                 return "CONGRATULATION";
             default:
                 return "Welcome";

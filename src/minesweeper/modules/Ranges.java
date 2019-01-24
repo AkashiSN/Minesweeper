@@ -59,7 +59,7 @@ public class Ranges {
      * 盤面のサイズ内のランダムな座標を返す
      * @return Coord
      */
-    static Coord getRandomCoord() {
+    public static Coord getRandomCoord() {
         return new Coord(random.nextInt(size.x),
                 random.nextInt(size.y));
     }
