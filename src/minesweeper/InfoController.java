@@ -20,6 +20,7 @@ public class InfoController {
     @FXML private void backToFront() {
         game.reset();
         game = null;
+        userName.getScene().getWindow().hide();
         Main.currentStage.setScene(Main.primaryScene);
     }
 
