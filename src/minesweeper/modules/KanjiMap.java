@@ -1,5 +1,6 @@
 package minesweeper.modules;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.util.List;
  * class KanjiMap
  * 漢字の盤面
  */
-public class KanjiMap {
+class KanjiMap {
     private KanjiMatrix kanjiMatrix = new KanjiMatrix();
 
     /**
@@ -47,7 +48,7 @@ public class KanjiMap {
      * @param coord 座標
      * @return kanji Kanji
      */
-    public Kanji getKanji(Coord coord){
+    Kanji getKanji(Coord coord){
         return kanjiMatrix.getKanji(coord);
     }
 
@@ -80,6 +81,26 @@ public class KanjiMap {
      */
     StackPane getKanjiStackPane(Coord coord){
         return kanjiMatrix.getKanjiStackPane(coord);
+    }
+
+    /**
+     * setImageView()
+     * 渡された座標にImageViewをセットする
+     * @param coord 座標
+     * @param iv ImageView
+     */
+    void setImageView(Coord coord, ImageView iv){
+        kanjiMatrix.setImageView(coord,iv);
+    }
+
+    /**
+     * getImageView()
+     * 渡された座標のImageViewを返す
+     * @param coord 座標
+     * @return ImageView
+     */
+    ImageView getImageView(Coord coord){
+        return kanjiMatrix.getImageView(coord);
     }
 
     /**

@@ -84,6 +84,16 @@ public class GameController implements TransitListener {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                } else { // 漢字が回答済み
+                    if (event.isShiftDown()) { // シフトが押されていたか
+                        game.pressSecondaryButton(coord);
+                    } else {
+                        if (game.getBox(coord) == Box.CLOSED){
+                           game.pressPrimaryButton(coord);
+                        }
+                    }
+                    label.setText(getMessage());
+                    setCountOfRemainFlags();
                 }
             }
         });
@@ -214,8 +224,10 @@ public class GameController implements TransitListener {
     private void updatePane(Coord coord) {
         if (game.getBox(coord) != Box.KNOANSWERED) { // 漢字が解かれた時
             Box box = game.getBox(coord);
+            gridPane.getChildren().remove(game.getImageView(coord));
             gridPane.getChildren().remove(game.getKanjiStackPane(coord)); // 漢字を消す
             ImageView iv = new ImageView((Image) box.image); // 画像をセット
+            game.setImageView(coord,iv);
             gridPane.add(iv, coord.x, coord.y);
         }
     }

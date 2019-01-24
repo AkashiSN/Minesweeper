@@ -1,5 +1,6 @@
 package minesweeper.modules;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 /**
@@ -60,6 +61,26 @@ class KanjiMatrix extends Matrix {
      */
     StackPane getKanjiStackPane(Coord coord){
         return kanjiMatrix[coord.x][coord.y].kanjiStackPane;
+    }
+
+    /**
+     * setImageView()
+     * 渡された座標にImageViewをセットする
+     * @param coord 座標
+     * @param iv ImageView
+     */
+    void setImageView(Coord coord, ImageView iv){
+        kanjiMatrix[coord.x][coord.y].imageView = iv;
+    }
+
+    /**
+     * getImageView()
+     * 渡された座標のImageViewを返す
+     * @param coord 座標
+     * @return ImageView
+     */
+    ImageView getImageView(Coord coord){
+        return kanjiMatrix[coord.x][coord.y].imageView;
     }
 
 }

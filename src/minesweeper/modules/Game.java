@@ -1,5 +1,6 @@
 package minesweeper.modules;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
@@ -122,6 +123,27 @@ public class Game {
     public StackPane getKanjiStackPane(Coord coord){
         return kanjiMap.getKanjiStackPane(coord);
     }
+
+    /**
+     * setImageView()
+     * 渡された座標にImageViewをセットする
+     * @param coord 座標
+     * @param iv ImageView
+     */
+    public void setImageView(Coord coord, ImageView iv){
+        kanjiMap.setImageView(coord,iv);
+    }
+
+    /**
+     * getImageView()
+     * 渡された座標のImageViewを返す
+     * @param coord 座標
+     * @return ImageView
+     */
+    public ImageView getImageView(Coord coord){
+        return kanjiMap.getImageView(coord);
+    }
+
 
     /**
      * pressPrimaryButton()

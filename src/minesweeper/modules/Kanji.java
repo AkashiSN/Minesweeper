@@ -1,5 +1,6 @@
 package minesweeper.modules;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public class Kanji {
     public List<String> yomi; // 読み仮名
     public String imi; // 意味
     StackPane kanjiStackPane; // StackPane
+    ImageView imageView; // image
 
     /**
      * Kanji()
