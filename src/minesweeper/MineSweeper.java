@@ -60,6 +60,7 @@ class MineSweeper {
         Game game = gameController.getGame();
         Solver solver = gameController.getSolver();
 
+        Main.currentStage.setTitle("難読マインスイーパー");
         Main.currentStage.setResizable(false);
         Main.currentStage.setScene(new Scene(root, size.x, size.y));
 
