@@ -8,7 +8,7 @@ class Flag {
     private Matrix flagMap; // フラグの盤面
     private int countOfClosedBoxes; // 閉じられているマスの数
     private int countOfFlagedBoxes; // フラグが立てられているマスの数
-    private Logger logger;
+    private Logger logger; // 履歴表示リスト
 
     /**
      * start()
@@ -29,6 +29,11 @@ class Flag {
         return flagMap.get(coord);
     }
 
+    /**
+     * setLogger()
+     * 履歴表示リストをセット
+     * @param l 履歴表示リスト
+     */
     void setLogger(Logger l){
         logger = l;
     }

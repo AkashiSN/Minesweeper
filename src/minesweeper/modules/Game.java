@@ -78,6 +78,11 @@ public class Game {
         return flag.get(coord);
     }
 
+    /**
+     * setLogger()
+     * 履歴表示リストをセット
+     * @param l 履歴表示リスト
+     */
     public void setLogger(Logger l){
         logger = l;
         flag.setLogger(logger);
@@ -166,6 +171,10 @@ public class Game {
         if (flag.getCountOfClosedBoxes() == size) { // 初めて開ける時
             bomb.start(coord); // 地雷を配置する
         }
+        if (flag.get(coord) == Box.OPENED){
+            return;
+        }
+        logger.addLog("Opening " + coord.show() );
         openBox(coord);
         checkWinner();
     }

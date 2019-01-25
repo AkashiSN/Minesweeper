@@ -35,12 +35,10 @@ public class GameController implements TransitListener {
     private Game game; // ゲームを保持
     private Solver solver; // ソルバー
     private Logger logger; // 履歴表示
-    private String name; // 名前
     private boolean autoMode;
     private final int IMAGE_SIZE = 50; // マスのサイズ
     @FXML private GridPane gridPane; // 盤面
     private Label flagsBomb; // フラグの数と地雷の数
-    //    @FXML private Label label; // 情報ラベル
 
     /**
      * getGame()
@@ -58,15 +56,6 @@ public class GameController implements TransitListener {
      */
     Solver getSolver(){
         return solver;
-    }
-
-    /**
-     * setName()
-     * 名前をセットする
-     * @param n 名前
-     */
-    void setName(String n){
-        name = n;
     }
 
     /**
@@ -123,10 +112,21 @@ public class GameController implements TransitListener {
         return size;
     }
 
+    /**
+     * startAuto()
+     * ソルバーを起動する
+     */
     void startAuto() {
         solver.start();
     }
 
+    /**
+     * mouseClickedEvent()
+     * マウスがクリックされたときのイベントハンドラー
+     * @param mb マウスボタン
+     * @param isShift シフトが押されているか
+     * @param coord 座標
+     */
     private void mouseClickedEvent(MouseButton mb, boolean isShift, Coord coord) {
         if (mb == MouseButton.PRIMARY ) { // 左クリックの時
             if (game.getBox(coord) == Box.KNOANSWERED) { // 漢字がまだ回答されていない時
@@ -141,7 +141,6 @@ public class GameController implements TransitListener {
                     game.pressSecondaryButton(coord);
                 } else {
                     if (game.getBox(coord) == Box.CLOSED) {
-                        logger.addLog("Opening " + coord.show() );
                         game.pressPrimaryButton(coord);
                     }
                 }
@@ -189,7 +188,6 @@ public class GameController implements TransitListener {
                     if (isShift) { // シフトが押されていたか
                         game.pressSecondaryButton(coord);
                     } else {
-                        logger.addLog("Opening " + coord.show() );
                         game.pressPrimaryButton(coord);
                     }
                 }
@@ -247,6 +245,11 @@ public class GameController implements TransitListener {
         return "";
     }
 
+    /**
+     * openClearWindow()
+     * クリアウィンドウを開く
+     * @param s 表示する文字
+     */
     private void openClearWindow(String s){
         Stage clearWindow = new Stage();
         clearWindow.initModality(Modality.APPLICATION_MODAL); // モーダルウインドウに設定
