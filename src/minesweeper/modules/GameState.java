@@ -7,5 +7,6 @@ package minesweeper.modules;
 public enum GameState {
     PLAYED, // ゲーム中
     BOMBED, // 爆発した
-    WINNER // 勝利した
+    WINNER, // 勝利した
+    DIED // ライフがゼロになった
 }

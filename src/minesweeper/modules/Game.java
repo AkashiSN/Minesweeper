@@ -302,17 +302,35 @@ public class Game {
         return flag.getCountOfFlagedBoxes();
     }
 
+    /**
+     * setLifeValue()
+     * ライフの値をセットする
+     * @param l lifeの値
+     */
     public void setLifeValue(int l){
         lifeValue = l;
         life.setText(String.valueOf(lifeValue));
     }
 
+    /**
+     * setLife()
+     * ライフのラベルをセットする
+     * @param l ライフのラベル
+     */
     public void setLife(Label l){
         life = l;
     }
 
+    /**
+     * decrementLife()
+     * ライフを１減らす
+     */
     public void decrementLife(){
         lifeValue --;
+        if(lifeValue <= 0){ // ライフがゼロになったら
+            state = GameState.DIED;
+            Timer.stop();
+        }
         life.setText(String.valueOf(lifeValue));
     }
 }
