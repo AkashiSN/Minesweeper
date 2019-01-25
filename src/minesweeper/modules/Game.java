@@ -17,6 +17,7 @@ public class Game {
     private KanjiMap kanjiMap; // 漢字の盤面
     private int lifeValue; // ライフの値
     private Label life; // ライフラベル
+    private Logger logger;
 
     /**
      * getState()
@@ -75,6 +76,11 @@ public class Game {
         if (flag.get(coord) == Box.OPENED)
             return bomb.get(coord);
         return flag.get(coord);
+    }
+
+    public void setLogger(Logger l){
+        logger = l;
+        flag.setLogger(logger);
     }
 
     /**

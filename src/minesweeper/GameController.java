@@ -36,6 +36,7 @@ public class GameController implements TransitListener {
     private Solver solver; // ソルバー
     private Logger logger; // 履歴表示
     private String name; // 名前
+    private boolean autoMode;
     private final int IMAGE_SIZE = 50; // マスのサイズ
     @FXML private GridPane gridPane; // 盤面
     private Label flagsBomb; // フラグの数と地雷の数
@@ -85,6 +86,7 @@ public class GameController implements TransitListener {
      */
     void setLogger(ListView<String> l){
         logger = new Logger(l);
+        game.setLogger(logger);
     }
 
     /**
@@ -102,7 +104,8 @@ public class GameController implements TransitListener {
      * initPane()
      * 盤面を表示してイベントを登録する
      */
-    Coord initPane(boolean autoMode){
+    Coord initPane(boolean a){
+        autoMode = a;
         if (autoMode){
             solver = new Solver(game);
         }
@@ -110,10 +113,12 @@ public class GameController implements TransitListener {
         gridPane.setGridLinesVisible(true);
 
         gridPane.setOnMouseClicked(event -> { // マス目をクリックした時のイベントハンドラ
-            int x = (int) event.getX() / IMAGE_SIZE;
-            int y = (int) event.getY() / IMAGE_SIZE;
-            Coord coord = new Coord(x, y);
-            mouseClickedEvent(event.getButton(),event.isShiftDown(),coord);
+            if (!autoMode && game.getState() == GameState.PLAYED) { // 自動プレイではなくプレイ中の時
+                int x = (int) event.getX() / IMAGE_SIZE;
+                int y = (int) event.getY() / IMAGE_SIZE;
+                Coord coord = new Coord(x, y);
+                mouseClickedEvent(event.getButton(), event.isShiftDown(), coord);
+            }
         });
         return size;
     }
@@ -123,7 +128,7 @@ public class GameController implements TransitListener {
     }
 
     private void mouseClickedEvent(MouseButton mb, boolean isShift, Coord coord) {
-        if (mb == MouseButton.PRIMARY) { // 左クリックの時
+        if (mb == MouseButton.PRIMARY ) { // 左クリックの時
             if (game.getBox(coord) == Box.KNOANSWERED) { // 漢字がまだ回答されていない時
                 Kanji kanji = game.getKanji(coord);
                 try {
@@ -134,14 +139,14 @@ public class GameController implements TransitListener {
             } else { // 漢字が回答済み
                 if (isShift) { // シフトが押されていたか
                     game.pressSecondaryButton(coord);
-                    logger.addLog(name + " flagged " + coord.show() );
                 } else {
                     if (game.getBox(coord) == Box.CLOSED) {
+                        logger.addLog("Opening " + coord.show() );
                         game.pressPrimaryButton(coord);
                     }
                 }
-                //label.setText(getMessage());
                 setCountOfRemainFlags();
+                logger.addLog(getMessage());
             }
         }
     }
@@ -183,13 +188,13 @@ public class GameController implements TransitListener {
                 if (game.getBox(coord) != Box.KNOANSWERED){ // 回答が正解だった時
                     if (isShift) { // シフトが押されていたか
                         game.pressSecondaryButton(coord);
-                        logger.addLog(name + " flagged " + coord.show() );
                     } else {
+                        logger.addLog("Opening " + coord.show() );
                         game.pressPrimaryButton(coord);
                     }
                 }
-                //label.setText(getMessage());
                 setCountOfRemainFlags();
+                logger.addLog(getMessage());
             }
         });
         final KanjiController kanjiController = fxmlLoader.getController(); // 回答ウィンドウのコントローラー
@@ -226,17 +231,40 @@ public class GameController implements TransitListener {
      * @return message String
      */
     private String getMessage() {
-        switch (game.getState()) {
-            case PLAYED:
-                return "Thinking";
-            case BOMBED:
-                return "YOU LOSE!";
-            case WINNER:
-                return "CONGRATULATION";
-            default:
-                return "Welcome";
+        if (game.getState() != GameState.PLAYED) {
+            switch (game.getState()) {
+                case BOMBED:
+                    openClearWindow("YOU LOSE !");
+                    return "YOU LOSE !";
+                case DIED:
+                    openClearWindow("YOU DIED !");
+                    return "YOU DIED";
+                case WINNER:
+                    openClearWindow("CONGRATULATION !");
+                    return "CONGRATULATION !!";
+            }
         }
+        return "";
+    }
 
+    private void openClearWindow(String s){
+        Stage clearWindow = new Stage();
+        clearWindow.initModality(Modality.APPLICATION_MODAL); // モーダルウインドウに設定
+        clearWindow.initOwner(Main.currentStage); // オーナーを設定
+        Main.currentStage.setTitle(s);
+        clearWindow.setTitle(s);
+
+        Text text = new Text(s);
+
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().add(text);
+        StackPane.setAlignment(text, Pos.CENTER);
+
+        Scene scene = new Scene(stackPane,200,100);
+
+        scene.setOnKeyPressed((KeyEvent e) -> scene.getWindow().hide());
+        clearWindow.setScene(scene);
+        clearWindow.show();
     }
 
     /**

@@ -8,6 +8,7 @@ class Flag {
     private Matrix flagMap; // フラグの盤面
     private int countOfClosedBoxes; // 閉じられているマスの数
     private int countOfFlagedBoxes; // フラグが立てられているマスの数
+    private Logger logger;
 
     /**
      * start()
@@ -28,6 +29,10 @@ class Flag {
         return flagMap.get(coord);
     }
 
+    void setLogger(Logger l){
+        logger = l;
+    }
+
     /**
      * setOpenedToBox()
      * 渡された座標のマスを開ける
@@ -46,8 +51,14 @@ class Flag {
      */
     void toggleFlagedToBox(Coord coord) {
         switch (flagMap.get(coord)) {
-            case FLAGED: setClosedToBox(coord); break;
-            case CLOSED: setFlagedToBox(coord); break;
+            case FLAGED:
+                setClosedToBox(coord);
+                logger.addLog("Remove flag of " + coord.show() );
+                break;
+            case CLOSED:
+                setFlagedToBox(coord);
+                logger.addLog("Set flag in " + coord.show() );
+                break;
         }
     }
 
@@ -93,11 +104,12 @@ class Flag {
 
     /**
      * setBombedToBox()
-     * 渡された座標のマスを地雷が爆発したとする
+     * 渡された座標のマスを地雷が爆発した
      * @param coord 座標
      */
     void setBombedToBox(Coord coord) {
         flagMap.set(coord, Box.BOMBED);
+        logger.addLog("Bombed in " + coord.show() );
         transitToController(coord);
     }
 

@@ -34,6 +34,11 @@ public class Coord {
         return super.equals(o);
     }
 
+    /**
+     * show()
+     * 座標を表示した
+     * @return 座標
+     */
     public String show(){
         return "(" + x + "," + y + ")";
     }
