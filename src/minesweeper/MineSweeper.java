@@ -68,7 +68,7 @@ class MineSweeper {
 
         openInfoWindow(game,solver, x, y);
         gameController.setName(name);
-        gameController.setFlagsBom(flagsBomb);
+        gameController.setFlagsBomb(flagsBomb);
         gameController.setLogger(list);
         game.setLife(life);
         game.setLifeValue(lifeValue);

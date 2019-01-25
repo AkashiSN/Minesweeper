@@ -34,30 +34,55 @@ public class GameController implements TransitListener {
 
     private Game game; // ゲームを保持
     private Solver solver; // ソルバー
-    private Logger logger;
-    private String name;
+    private Logger logger; // 履歴表示
+    private String name; // 名前
     private final int IMAGE_SIZE = 50; // マスのサイズ
     @FXML private GridPane gridPane; // 盤面
-    private Label flagsBomb;
+    private Label flagsBomb; // フラグの数と地雷の数
     //    @FXML private Label label; // 情報ラベル
 
+    /**
+     * getGame()
+     * ゲームインスタンスを返す
+     * @return game
+     */
     Game getGame(){
         return game;
     }
 
+    /**
+     * getSolver()
+     * ソルバーのインスタンスを返す
+     * @return solver
+     */
     Solver getSolver(){
         return solver;
     }
 
+    /**
+     * setName()
+     * 名前をセットする
+     * @param n 名前
+     */
     void setName(String n){
         name = n;
     }
 
-    void setFlagsBom(Label l){
+    /**
+     * setFlagsBomb()
+     * ラベルをセットする
+     * @param l フラグの数と地雷の数のラベル
+     */
+    void setFlagsBomb(Label l){
         flagsBomb = l;
         setCountOfRemainFlags();
     }
 
+    /**
+     * setLogger()
+     * 履歴表示のリストをセットする
+     * @param l 履歴のリスト
+     */
     void setLogger(ListView<String> l){
         logger = new Logger(l);
     }

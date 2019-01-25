@@ -15,12 +15,20 @@ public class StartController {
     @FXML private void singleMode() {
         singleMode = true;
         autoMode = false;
+        if(name.isDisable()){
+            name.setText("");
+            name.setDisable(false);
+        }
         start.setText("ゲーム開始");
     }
 
     @FXML private void multiMode() {
         singleMode = false;
         autoMode = false;
+        if(name.isDisable()){
+            name.setText("");
+            name.setDisable(false);
+        }
         start.setText("マッチング開始");
     }
 
@@ -50,13 +58,13 @@ public class StartController {
                     c = 9;
                     r = 9;
                     b = c * r / 5;
-                    l = 4;
+                    l = 3;
                     break;
                 case DIFFICULT:
                     c = 15;
                     r = 20;
                     b = c * r / 7;
-                    l = 5;
+                    l = 3;
                     break;
                 default:
                     c = 7;
