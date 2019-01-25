@@ -20,7 +20,7 @@ class MineSweeper {
     static int cols; // 横幅
     static int rows; // 縦の長さ
     static int boms; // 地雷の数
-    static int lifeValue;
+    private static int lifeValue;
     private static String name; // ニックネーム
     private Label flagsBomb;
     private Label life;

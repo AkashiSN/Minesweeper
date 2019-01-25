@@ -21,7 +21,8 @@ public enum Box {
     BOMBED, // 地雷が爆発したマス
     NOBOMB, // フラグが立てられたが、地雷がなかったマス
     KNOANSWERED, // 漢字問題が解かれていない
-    KANSWERED; // 漢字問題が解かれた
+    KCORRECTED, // 漢字問題を正解した
+    KINCORRECTED; // 漢字問題は不正解
 
     public Object image; // 盤面に表示する画像
 

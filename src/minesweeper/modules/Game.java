@@ -15,8 +15,8 @@ public class Game {
     private GameState state; // ゲームの状態
     private int size; // マス目の総数
     private KanjiMap kanjiMap; // 漢字の盤面
-    private int lifeValue;
-    private Label life;
+    private int lifeValue; // ライフの値
+    private Label life; // ライフラベル
 
     /**
      * getState()
@@ -99,12 +99,12 @@ public class Game {
     }
 
     /**
-     * setAnsweredToBox()
-     * 渡された座標を正解とする
+     * setKanjiStateToBox()
+     * 渡された座標の漢字にBoxをセットする
      * @param coord 座標
      */
-    public void setAnsweredToBox(Coord coord){
-        kanjiMap.setAnsweredToBox(coord);
+    public void setKanjiStateToBox(Coord coord, Box box){
+        kanjiMap.setKanjiStateToBox(coord, box);
     }
 
     /**
@@ -226,7 +226,7 @@ public class Game {
                         openBombs(coord);
                         return;
                     default:
-                        kanjiMap.setAnsweredToBox(coord);
+                        kanjiMap.setKanjiStateToBox(coord, Box.KINCORRECTED);
                         flag.setOpenedToBox(coord);
                 }
         }
@@ -255,7 +255,7 @@ public class Game {
         Timer.stop();
         flag.setBombedToBox(bombed);
         for (Coord coord : Ranges.getAllCoords()) {
-            kanjiMap.setAnsweredToBox(coord);
+            kanjiMap.setKanjiStateToBox(coord, Box.KINCORRECTED);
             if (bomb.get(coord) == Box.BOMB)
                 flag.setOpenedToCloseBombBox(coord);
             else
@@ -269,7 +269,7 @@ public class Game {
      * @param coord 座標
      */
     private void openBoxesAround(Coord coord) {
-        kanjiMap.setAnsweredToBox(coord);
+        kanjiMap.setKanjiStateToBox(coord, Box.KINCORRECTED);
         flag.setOpenedToBox(coord);
         for (Coord around : Ranges.getCoordsAround(coord))
             openBox(around);

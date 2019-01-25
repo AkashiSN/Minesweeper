@@ -39,8 +39,6 @@ public class GameController implements TransitListener {
     private final int IMAGE_SIZE = 50; // マスのサイズ
     @FXML private GridPane gridPane; // 盤面
     private Label flagsBomb;
-    private Label life;
-    private int lifeValue;
     //    @FXML private Label label; // 情報ラベル
 
     Game getGame(){
@@ -222,7 +220,7 @@ public class GameController implements TransitListener {
      */
     private void setImages() throws FileNotFoundException {
         for (Box box : Box.values()) {
-            if (box != Box.KNOANSWERED && box != Box.KANSWERED) {
+            if (box != Box.KNOANSWERED && box != Box.KINCORRECTED && box != Box.KCORRECTED) {
                 box.image = getImage(box.name());
             }
         }

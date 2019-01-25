@@ -50,19 +50,19 @@ public class StartController {
                     c = 9;
                     r = 9;
                     b = c * r / 5;
-                    l = 10;
+                    l = 4;
                     break;
                 case DIFFICULT:
                     c = 15;
                     r = 20;
                     b = c * r / 7;
-                    l = 10;
+                    l = 5;
                     break;
                 default:
                     c = 7;
                     r = 7;
                     b = c * r / 7;
-                    l = 5;
+                    l = 3;
             }
             MineSweeper mine = new MineSweeper(c,r,b,l,name.getText());
             mine.start(autoMode);

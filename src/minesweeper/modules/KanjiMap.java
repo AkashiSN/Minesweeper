@@ -108,7 +108,7 @@ class KanjiMap {
      * 渡された座標を正解済みにする
      * @param coord 座標
      */
-    void setAnsweredToBox(Coord coord){
-        kanjiMatrix.set(coord,Box.KANSWERED);
+    void setKanjiStateToBox(Coord coord, Box box){
+        kanjiMatrix.set(coord, box);
     }
 }
