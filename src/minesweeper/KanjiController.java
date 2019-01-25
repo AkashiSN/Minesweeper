@@ -99,6 +99,7 @@ public class KanjiController{
         imiLabel.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",20));
         imi.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",15));
         kanji.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",50));
+        answerText.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",15));
         String info;
         if (shift){
             info = "フラグを立てる";

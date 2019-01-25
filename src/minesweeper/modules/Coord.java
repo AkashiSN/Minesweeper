@@ -34,4 +34,8 @@ public class Coord {
         return super.equals(o);
     }
 
+    public String show(){
+        return "(" + x + "," + y + ")";
+    }
+
 }

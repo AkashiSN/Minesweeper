@@ -14,16 +14,20 @@ public class StartController {
 
     @FXML private void singleMode() {
         singleMode = true;
+        autoMode = false;
         start.setText("ゲーム開始");
     }
 
     @FXML private void multiMode() {
         singleMode = false;
+        autoMode = false;
         start.setText("マッチング開始");
     }
 
     @FXML void autoMode(){
         autoMode = true;
+        name.setText("CPU");
+        name.setDisable(true);
     }
 
     @FXML private void easyMode() {
@@ -45,7 +49,7 @@ public class StartController {
                 case NORMAL:
                     c = 9;
                     r = 9;
-                    b = c * r / 7;
+                    b = c * r / 5;
                     break;
                 case DIFFICULT:
                     c = 15;

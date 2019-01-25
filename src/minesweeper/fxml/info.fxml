@@ -68,7 +68,7 @@
       </HBox>
       <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="100.0" prefWidth="200.0">
          <content>
-            <ListView prefHeight="100.0" prefWidth="200.0" />
+            <ListView fx:id="log" prefHeight="100.0" prefWidth="200.0" />
          </content>
       </ScrollPane>
       <HBox prefHeight="50.0" prefWidth="200.0">

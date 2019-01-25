@@ -1,12 +1,12 @@
 package minesweeper;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -34,9 +34,12 @@ public class GameController implements TransitListener {
 
     private Game game; // ゲームを保持
     private Solver solver; // ソルバー
+    private Logger logger;
+    private String name;
     private final int IMAGE_SIZE = 50; // マスのサイズ
     @FXML private GridPane gridPane; // 盤面
     private Label flagsBomb;
+    private ListView<String> log;
 //    @FXML private Label label; // 情報ラベル
 
 
@@ -45,9 +48,22 @@ public class GameController implements TransitListener {
         return game;
     }
 
+    Solver getSolver(){
+        return solver;
+    }
+
+    void setName(String n){
+        name = n;
+    }
+
     void setFlagsBom(Label l){
         flagsBomb = l;
         setCountOfRemainFlags();
+    }
+
+    void setLogger(ListView<String> l){
+        log = l;
+        logger = new Logger(l);
     }
 
     /**
@@ -82,15 +98,7 @@ public class GameController implements TransitListener {
     }
 
     void startAuto() {
-        new Thread(() -> {
-            //考えているふりをする。
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Platform.runLater(() -> solver.solve());
-        }).start();
+        solver.start();
     }
 
     private void mouseClickedEvent(MouseButton mb, boolean isShift, Coord coord) {
@@ -105,6 +113,7 @@ public class GameController implements TransitListener {
             } else { // 漢字が回答済み
                 if (isShift) { // シフトが押されていたか
                     game.pressSecondaryButton(coord);
+                    logger.addLog(name + " flagged " + coord.show() );
                 } else {
                     if (game.getBox(coord) == Box.CLOSED) {
                         game.pressPrimaryButton(coord);
@@ -153,6 +162,7 @@ public class GameController implements TransitListener {
                 if (game.getBox(coord) != Box.KNOANSWERED){ // 回答が正解だった時
                     if (isShift) { // シフトが押されていたか
                         game.pressSecondaryButton(coord);
+                        logger.addLog(name + " flagged " + coord.show() );
                     } else {
                         game.pressPrimaryButton(coord);
                     }

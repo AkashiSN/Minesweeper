@@ -4,9 +4,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import minesweeper.modules.Coord;
 import minesweeper.modules.Game;
+import minesweeper.solver.Solver;
 
 import java.io.IOException;
 
@@ -19,6 +21,8 @@ class MineSweeper {
     static int rows; // 縦の長さ
     static int boms; // 地雷の数
     private static String name; // ニックネーム
+    private Label flagsBomb;
+    private ListView<String> list;
 
     /**
      * MineSweeper()
@@ -51,25 +55,37 @@ class MineSweeper {
 
         Coord size = gameController.initPane(autoMode);
         Game game = gameController.getGame();
+        Solver solver = gameController.getSolver();
 
         Main.currentStage.setResizable(false);
-        Main.currentStage.setScene(new Scene(root,size.x,size.y));
+        Main.currentStage.setScene(new Scene(root, size.x, size.y));
 
         double x = Main.currentStage.getX() + Main.currentStage.getWidth();
         double y = Main.currentStage.getY();
 
-        Label flagsBomb =  openInfoWindow(game, x, y);
+        openInfoWindow(game,solver, x, y);
+        gameController.setName(name);
         gameController.setFlagsBom(flagsBomb);
-        //gameController.startAuto();
+        gameController.setLogger(list);
+
+        Main.currentStage.showingProperty().addListener((observable, oldValue, newValue) -> { // ウィンドウが閉じた時のイベントハンドラ
+            if (oldValue && !newValue) {
+                flagsBomb.getScene().getWindow().hide();
+
+            }
+        });
+        if (autoMode) {
+            gameController.startAuto();
+        }
     }
 
-    private Label openInfoWindow(Game game, double x, double y) throws IOException {
+    private void openInfoWindow(Game g, Solver s, double x, double y) throws IOException {
         Stage infoWindow = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/info.fxml"));
         Parent root = fxmlLoader.load();
 
         InfoController infoController = fxmlLoader.getController();
-        infoController.init(game, name);
+        infoController.init(g, s, name);
 
         Scene scene = new Scene(root);
         infoWindow.setScene(scene);
@@ -78,6 +94,7 @@ class MineSweeper {
         infoWindow.setY(y);
         infoWindow.show();
 
-        return infoController.getFlagsBomb();
+        flagsBomb = infoController.getFlagsBomb();
+        list = infoController.getLogList();
     }
 }

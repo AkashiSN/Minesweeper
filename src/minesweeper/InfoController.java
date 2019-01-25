@@ -3,15 +3,19 @@ package minesweeper;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import minesweeper.modules.Game;
 import minesweeper.modules.Timer;
+import minesweeper.solver.Solver;
 
 public class InfoController {
     private Game game;
+    private Solver solver;
     @FXML private Label userName;
     @FXML private Label flagsBomb;
     @FXML private Label life;
     @FXML private Label timer;
+    @FXML private ListView<String> log;
 
     /**
      * backToFront()
@@ -20,6 +24,7 @@ public class InfoController {
     @FXML private void backToFront() {
         game.reset();
         game = null;
+        solver = null;
         userName.getScene().getWindow().hide();
         Main.currentStage.setScene(Main.primaryScene);
     }
@@ -32,13 +37,18 @@ public class InfoController {
         Platform.exit();
     }
 
-    void init(Game g, String name){
+    void init(Game g, Solver s, String name){
         game = g;
+        solver = s;
         new Timer(timer);
         userName.setText(name);
     }
 
     Label getFlagsBomb(){
         return flagsBomb;
+    }
+
+    ListView<String> getLogList(){
+        return log;
     }
 }
