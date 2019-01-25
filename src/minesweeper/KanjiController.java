@@ -41,10 +41,6 @@ public class KanjiController{
      * @throws IOException
      */
     @FXML private void onSubmitButtonAction() throws IOException {
-        String answer = answerText.getText();
-        if (answer.isBlank()){ // 空欄の時
-            return;
-        }
         submitKanji();
     }
 
@@ -73,6 +69,7 @@ public class KanjiController{
             }
             openCorrectWindow(kanji.kanji,yomi.toString(),kanji.imi);
         }else{
+            game.decrementLife();
             openInCorrectWindow();
         }
     }

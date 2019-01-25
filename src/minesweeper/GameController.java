@@ -39,10 +39,9 @@ public class GameController implements TransitListener {
     private final int IMAGE_SIZE = 50; // マスのサイズ
     @FXML private GridPane gridPane; // 盤面
     private Label flagsBomb;
-    private ListView<String> log;
-//    @FXML private Label label; // 情報ラベル
-
-
+    private Label life;
+    private int lifeValue;
+    //    @FXML private Label label; // 情報ラベル
 
     Game getGame(){
         return game;
@@ -62,7 +61,6 @@ public class GameController implements TransitListener {
     }
 
     void setLogger(ListView<String> l){
-        log = l;
         logger = new Logger(l);
     }
 

@@ -48,6 +48,10 @@ public class InfoController {
         return flagsBomb;
     }
 
+    Label getLife(){
+        return life;
+    }
+
     ListView<String> getLogList(){
         return log;
     }

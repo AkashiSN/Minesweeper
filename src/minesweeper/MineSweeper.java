@@ -20,8 +20,10 @@ class MineSweeper {
     static int cols; // 横幅
     static int rows; // 縦の長さ
     static int boms; // 地雷の数
+    static int lifeValue;
     private static String name; // ニックネーム
     private Label flagsBomb;
+    private Label life;
     private ListView<String> list;
 
     /**
@@ -32,11 +34,12 @@ class MineSweeper {
      * @param b 地雷の数
      * @param n ニックネーム
      */
-    MineSweeper(int c,int r,int b,String n){
+    MineSweeper(int c,int r,int b,int l, String n){
         cols = c;
         rows = r;
         boms = b;
         name = n;
+        lifeValue = l;
     }
 
     /**
@@ -67,6 +70,8 @@ class MineSweeper {
         gameController.setName(name);
         gameController.setFlagsBom(flagsBomb);
         gameController.setLogger(list);
+        game.setLife(life);
+        game.setLifeValue(lifeValue);
 
         Main.currentStage.showingProperty().addListener((observable, oldValue, newValue) -> { // ウィンドウが閉じた時のイベントハンドラ
             if (oldValue && !newValue) {
@@ -96,5 +101,6 @@ class MineSweeper {
 
         flagsBomb = infoController.getFlagsBomb();
         list = infoController.getLogList();
+        life = infoController.getLife();
     }
 }

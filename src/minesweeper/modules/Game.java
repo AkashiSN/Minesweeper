@@ -1,5 +1,6 @@
 package minesweeper.modules;
 
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
@@ -14,6 +15,8 @@ public class Game {
     private GameState state; // ゲームの状態
     private int size; // マス目の総数
     private KanjiMap kanjiMap; // 漢字の盤面
+    private int lifeValue;
+    private Label life;
 
     /**
      * getState()
@@ -297,5 +300,19 @@ public class Game {
      */
     public int getCountOfFlagedBoxes(){
         return flag.getCountOfFlagedBoxes();
+    }
+
+    public void setLifeValue(int l){
+        lifeValue = l;
+        life.setText(String.valueOf(lifeValue));
+    }
+
+    public void setLife(Label l){
+        life = l;
+    }
+
+    public void decrementLife(){
+        lifeValue --;
+        life.setText(String.valueOf(lifeValue));
     }
 }
