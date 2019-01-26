@@ -3,6 +3,8 @@ package minesweeper.solver;
 import javafx.application.Platform;
 import minesweeper.modules.*;
 
+import java.util.*;
+
 public class Solver {
     private static final double EPSILON = 1e-10;
     private static final double INF = 1e10;
@@ -48,6 +50,9 @@ public class Solver {
         while (game.isOpened(leastPoint)){
             leastPoint = Ranges.getRandomCoord();
         }
+        Map<Coord,Double> leastPointMap = new HashMap<>();
+
+        leastPointMap.put(leastPoint,least);
 
         for (Coord coord : Ranges.getAllCoords()){
             if (game.getBox(coord) == Box.CLOSED) { // 対象マス
@@ -59,15 +64,36 @@ public class Solver {
                     game.pressPrimaryButton(coord);
                     return;
                 }else {
-                    if (least > eval){
-                        least = eval;
-                        leastPoint = coord;
-                    }
+                    leastPointMap.put(coord,eval);
                 }
             }
         }
-        logger.addLog("Randomly selected " + leastPoint.show());
-        game.pressPrimaryButton(leastPoint);
+
+        List<Map.Entry<Coord,Double>>entries = new ArrayList<>(leastPointMap.entrySet());
+        entries.sort(Comparator.comparing(Map.Entry::getValue));
+
+        List<Coord> pointList = new ArrayList<>();
+
+        least = entries.get(0).getValue();
+        for (Map.Entry<Coord,Double> s : entries){
+            if (s.getValue().equals(least)){
+                pointList.add(s.getKey());
+            }
+        }
+
+        StringBuilder str = new StringBuilder("(");
+        for (int i = 0; i < pointList.size(); i++){
+            str.append(pointList.get(i).show());
+            if (pointList.size() > 1 && pointList.size()-1 != i){
+                str.append(", ");
+            }
+        }
+        str.append(")");
+
+        Collections.shuffle(pointList);
+
+        logger.addLog("Selected " + pointList.get(0).show() + " randomly from " + str);
+        game.pressPrimaryButton(pointList.get(0));
     }
 
     private double evaluationFunction(Coord coord) {
