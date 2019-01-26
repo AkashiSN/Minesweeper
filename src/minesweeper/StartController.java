@@ -70,7 +70,7 @@ public class StartController {
                     c = 7;
                     r = 7;
                     b = c * r / 7;
-                    l = 3;
+                    l = 300;
             }
             MineSweeper mine = new MineSweeper(c,r,b,l,name.getText());
             mine.start(autoMode);

@@ -39,7 +39,7 @@ public class Coord {
      * 座標を表示した
      * @return 座標
      */
-    String show(){
+    public String show(){
         return "(" + x + "," + y + ")";
     }
 

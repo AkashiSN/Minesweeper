@@ -17,6 +17,7 @@ public class Game {
     private KanjiMap kanjiMap; // 漢字の盤面
     private int lifeValue; // ライフの値
     private Label life; // ライフラベル
+    private Label flagsBomb;
     private Logger logger;
 
     /**
@@ -64,6 +65,16 @@ public class Game {
     }
 
     /**
+     * isOpened()
+     * 渡された座標が空いているかを返す
+     * @param coord 座標
+     * @return そのマスが空いているか
+     */
+    public boolean isOpened(Coord coord){
+        return flag.get(coord) == Box.OPENED;
+    }
+
+    /**
      * getBox()
      * 渡された座標のマスを返す
      * @param coord 座標
@@ -73,10 +84,29 @@ public class Game {
         if (kanjiMap.get(coord) == Box.KNOANSWERED){
             return Box.KNOANSWERED;
         }
-        if (flag.get(coord) == Box.OPENED)
+        if (isOpened(coord)) {
             return bomb.get(coord);
+        }
         return flag.get(coord);
     }
+
+    /**
+     * @param l
+     */
+    public void setFlagsBomb(Label l){
+        flagsBomb = l;
+    }
+
+    /**
+     * setCountOfRemainFlags()
+     * 残りのフラグの数を表示する
+     */
+    public void setCountOfRemainFlags(){
+        String b = String.valueOf(getTotalBombs());
+        String f = String.valueOf(getCountOfFlagedBoxes());
+        flagsBomb.setText(f + " / " + b);
+    }
+
 
     /**
      * setLogger()
@@ -190,6 +220,7 @@ public class Game {
             return;
         }
         flag.toggleFlagedToBox(coord);
+        setCountOfRemainFlags();
         checkWinner();
     }
 

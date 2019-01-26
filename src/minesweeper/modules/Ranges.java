@@ -70,7 +70,7 @@ public class Ranges {
      * @param coord 座標
      * @return list ArrayList<Coord>
      */
-    static ArrayList<Coord> getCoordsAround(Coord coord) {
+    public static ArrayList<Coord> getCoordsAround(Coord coord) {
         Coord around;
         ArrayList<Coord> list = new ArrayList<>();
         for (int x = coord.x - 1; x <= coord.x + 1; x++)

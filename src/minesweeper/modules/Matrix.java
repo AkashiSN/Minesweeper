@@ -4,7 +4,7 @@ package minesweeper.modules;
  * class Matrix
  * 盤面を保持する
  */
-class Matrix {
+public class Matrix {
     private Box[][] matrix; // 盤面
 
     /**
@@ -12,7 +12,7 @@ class Matrix {
      * 渡されたマスで全座標を初期化する
      * @param defaultBox Box
      */
-     Matrix(Box defaultBox){
+     public Matrix(Box defaultBox){
         matrix = new Box[Ranges.getSize().x][Ranges.getSize().y];
         for(Coord coord : Ranges.getAllCoords())
             matrix[coord.x][coord.y] =  defaultBox;
@@ -36,7 +36,7 @@ class Matrix {
      * @param coord 座標
      * @param box マス
      */
-    void set(Coord coord, Box box){
+    public void set(Coord coord, Box box){
         if(Ranges.inRange(coord))
             matrix[coord.x][coord.y] = box;
     }

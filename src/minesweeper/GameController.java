@@ -38,7 +38,6 @@ public class GameController implements TransitListener {
     private boolean autoMode;
     private final int IMAGE_SIZE = 50; // マスのサイズ
     @FXML private GridPane gridPane; // 盤面
-    private Label flagsBomb; // フラグの数と地雷の数
 
     /**
      * getGame()
@@ -64,8 +63,9 @@ public class GameController implements TransitListener {
      * @param l フラグの数と地雷の数のラベル
      */
     void setFlagsBomb(Label l){
-        flagsBomb = l;
-        setCountOfRemainFlags();
+        // フラグの数と地雷の数
+        game.setFlagsBomb(l);
+        game.setCountOfRemainFlags();
     }
 
     /**
@@ -76,6 +76,7 @@ public class GameController implements TransitListener {
     void setLogger(ListView<String> l){
         logger = new Logger(l);
         game.setLogger(logger);
+        solver.setLogger(logger);
     }
 
     /**
@@ -117,6 +118,10 @@ public class GameController implements TransitListener {
      * ソルバーを起動する
      */
     void startAuto() {
+        for (Coord coord : Ranges.getAllCoords()){ // 自動プレイのときは漢字はすべて不正解とする
+            game.setKanjiStateToBox(coord, Box.KINCORRECTED);
+        }
+
         solver.start();
     }
 
@@ -144,20 +149,9 @@ public class GameController implements TransitListener {
                         game.pressPrimaryButton(coord);
                     }
                 }
-                setCountOfRemainFlags();
                 logger.addLog(getMessage());
             }
         }
-    }
-
-    /**
-     * setCountOfRemainFlags()
-     * 残りのフラグの数を表示する
-     */
-    private void setCountOfRemainFlags(){
-        String b = String.valueOf(game.getTotalBombs());
-        String f = String.valueOf(game.getCountOfFlagedBoxes());
-        flagsBomb.setText(f + " / " + b);
     }
 
     /**
@@ -191,7 +185,6 @@ public class GameController implements TransitListener {
                         game.pressPrimaryButton(coord);
                     }
                 }
-                setCountOfRemainFlags();
                 logger.addLog(getMessage());
             }
         });

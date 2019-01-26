@@ -38,7 +38,7 @@ public enum Box {
      * getNumber()
      * @return 現在のBoxの順番
      */
-    int getNumber() {
+    public int getNumber() {
         return this.ordinal();
     }
 }
