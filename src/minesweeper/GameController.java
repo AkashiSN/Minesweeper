@@ -73,10 +73,12 @@ public class GameController implements TransitListener {
      * 履歴表示のリストをセットする
      * @param l 履歴のリスト
      */
-    void setLogger(ListView<String> l){
+    void setLogger(ListView<String> l) {
         logger = new Logger(l);
         game.setLogger(logger);
-        solver.setLogger(logger);
+        if (autoMode) {
+            solver.setLogger(logger);
+        }
     }
 
     /**
