@@ -40,13 +40,13 @@
                <toggleGroup>
                   <ToggleGroup fx:id="mode" />
                </toggleGroup></RadioButton>
-            <RadioButton fx:id="multi" mnemonicParsing="false" onAction="#multiMode" text="対戦プレイ" toggleGroup="$mode" GridPane.columnIndex="2" />
+            <RadioButton fx:id="multi" disable="true" mnemonicParsing="false" onAction="#multiMode" text="対戦プレイ" toggleGroup="$mode" GridPane.columnIndex="2" />
             <RadioButton fx:id="easy" mnemonicParsing="false" onAction="#easyMode" selected="true" text="やさしい" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <toggleGroup>
                   <ToggleGroup fx:id="difficulty" />
                </toggleGroup></RadioButton>
             <RadioButton fx:id="normal" mnemonicParsing="false" onAction="#normalMode" text="ふつう" toggleGroup="$difficulty" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <RadioButton fx:id="difficult" disable="true" mnemonicParsing="false" onAction="#difficultMode" text="むずかしい" toggleGroup="$difficulty" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <RadioButton fx:id="difficult" mnemonicParsing="false" onAction="#difficultMode" text="むずかしい" toggleGroup="$difficulty" GridPane.columnIndex="3" GridPane.rowIndex="1" />
             <AnchorPane>
                <children>
                   <Label layoutX="55.0" layoutY="35.0" text="モード" />

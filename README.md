@@ -42,20 +42,8 @@
 - Main Class: `minesweeper.Main`
 - VM options: `--module-path ${PATH_TO_FX} --add-modules=javafx.controls,javafx.fxml`
 
-でApplyして,もう一回`+`から`Application`を選択して下のように設定する
-
-![mine](img/mine.png)
-
-- Name: `MineSweeper`
-- Main Class: `minesweeper.MineSweeper`
-
 でOKして閉じる.
 
 ![main](img/main.png)
 
 この状態で▶をクリックして実行するとGUIが起動する
-
-![mine](img/mine1.png)
-
-この状態で▶をクリックして実行するとマインスイーパーが起動する
-
