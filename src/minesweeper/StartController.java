@@ -57,13 +57,13 @@ public class StartController {
                 case NORMAL:
                     c = 9;
                     r = 9;
-                    b = c * r / 5;
+                    b = c * r / 6;
                     l = 5;
                     break;
                 case DIFFICULT:
                     c = 20;
                     r = 15;
-                    b = c * r / 7;
+                    b = c * r / 6;
                     l = 10;
                     break;
                 default:
