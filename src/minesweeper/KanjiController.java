@@ -94,11 +94,12 @@ public class KanjiController{
                 }
             }
         });
-
-        imiLabel.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",20));
-        imi.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",15));
-        kanji.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",50));
-        answerText.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",15));
+        String fileName = "/minesweeper/resources/fonts/ipam.ttf";
+        String filePath = Main.class.getResource(fileName).toString();
+        imiLabel.setFont(Font.loadFont(filePath,20));
+        imi.setFont(Font.loadFont(filePath,15));
+        kanji.setFont(Font.loadFont(filePath,50));
+        answerText.setFont(Font.loadFont(filePath,15));
 
         if (shift){
             infoLabel.setText("フラグを立てる");

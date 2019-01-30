@@ -32,7 +32,7 @@ public class Solver {
             while (game.getState() == GameState.PLAYED) {
                 //考えているふりをする。
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(50);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

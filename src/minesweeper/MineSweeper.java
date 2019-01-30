@@ -1,10 +1,12 @@
 package minesweeper;
 
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import minesweeper.modules.Coord;
 import minesweeper.modules.Game;
@@ -62,7 +64,13 @@ class MineSweeper {
 
         Main.currentStage.setTitle("難読マインスイーパー");
         Main.currentStage.setResizable(false);
+
         Main.currentStage.setScene(new Scene(root, size.x, size.y));
+
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        Main.currentStage.setX((primScreenBounds.getWidth() - Main.currentStage.getWidth()) / 2);
+        Main.currentStage.setY((primScreenBounds.getHeight() - Main.currentStage.getHeight()) / 2);
+
 
         double x = Main.currentStage.getX() + Main.currentStage.getWidth();
         double y = Main.currentStage.getY();

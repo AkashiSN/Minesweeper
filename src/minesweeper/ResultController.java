@@ -17,13 +17,15 @@ public class ResultController {
      * @param k 漢字
      */
     void init(String k, String y, String i,String r){
-        kanji.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",50));
+        String fileName = "/minesweeper/resources/fonts/ipam.ttf";
+        String filePath = Main.class.getResource(fileName).toString();
+        kanji.setFont(Font.loadFont(filePath,50));
         kanji.setText(k);
-        yomi.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",20));
+        yomi.setFont(Font.loadFont(filePath,20));
         yomi.setText(y);
-        imi.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",15));
+        imi.setFont(Font.loadFont(filePath,15));
         imi.setText(i);
-        imiLabel.setFont(Font.loadFont("file:resources/fonts/ipam.ttf",20));
+        imiLabel.setFont(Font.loadFont(filePath,20));
         infoLabel.setText(r);
     }
 }

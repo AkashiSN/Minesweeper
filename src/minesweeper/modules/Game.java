@@ -5,6 +5,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * class Game
@@ -36,7 +37,7 @@ public class Game {
      * @param rows 縦の長さ
      * @param bombs 地雷の数
      */
-    public Game(int cols, int rows, int bombs) throws IOException {
+    public Game(int cols, int rows, int bombs) throws IOException, URISyntaxException {
         Ranges.setSize(new Coord(cols, rows));
         size = cols * rows;
         bomb = new Bomb(bombs);

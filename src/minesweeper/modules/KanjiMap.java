@@ -4,6 +4,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,7 +20,7 @@ class KanjiMap {
      * KanjiMap()
      * 漢字をセットする
      */
-    KanjiMap() throws IOException {
+    KanjiMap() throws IOException, URISyntaxException {
         KanjiJson kanjiJson = new KanjiJson();
         List<Kanji> kanjiList = kanjiJson.getKanjiList();
         Iterator<Kanji> it = kanjiList.iterator();
