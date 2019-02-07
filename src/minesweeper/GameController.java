@@ -203,8 +203,7 @@ public class GameController implements TransitListener {
     private Coord initGrid(){
         for(Coord coord : Ranges.getAllCoords()){
             Text text = new Text(game.getKanji(coord).kanji);
-            String fileName = "/minesweeper/resources/fonts/ipam.ttf";
-            text.setFont(Font.loadFont(Main.class.getResource(fileName).toString(),20));
+            text.setFont(Font.loadFont("file:src/minesweeper/resources/fonts/ipam.ttf",20));
 
             StackPane stackPane = new StackPane();
             stackPane.setPrefSize(IMAGE_SIZE,IMAGE_SIZE);
@@ -286,9 +285,9 @@ public class GameController implements TransitListener {
      * @return Image
      */
     private Image getImage(String name) throws FileNotFoundException {
-        String fileName = "/minesweeper/resources/images/" + name.toLowerCase() + ".png";
-        InputStream is = Main.class.getResourceAsStream(fileName);
-        return new Image(is);
+        String filename = "src/minesweeper/resources/images/" + name.toLowerCase() + ".png";
+        InputStream inputStream = new FileInputStream(filename);
+        return new Image(inputStream);
     }
 
     /**

@@ -94,8 +94,7 @@ public class KanjiController{
                 }
             }
         });
-        String fileName = "/minesweeper/resources/fonts/ipam.ttf";
-        String filePath = Main.class.getResource(fileName).toString();
+        String filePath = "file:src/minesweeper/resources/fonts/ipam.ttf";
         imiLabel.setFont(Font.loadFont(filePath,20));
         imi.setFont(Font.loadFont(filePath,15));
         kanji.setFont(Font.loadFont(filePath,50));

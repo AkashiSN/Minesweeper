@@ -17,8 +17,7 @@ public class ResultController {
      * @param k 漢字
      */
     void init(String k, String y, String i,String r){
-        String fileName = "/minesweeper/resources/fonts/ipam.ttf";
-        String filePath = Main.class.getResource(fileName).toString();
+        String filePath = "file:src/minesweeper/resources/fonts/ipam.ttf";
         kanji.setFont(Font.loadFont(filePath,50));
         kanji.setText(k);
         yomi.setFont(Font.loadFont(filePath,20));
